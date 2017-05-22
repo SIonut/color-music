@@ -1,22 +1,17 @@
 package saci.backend.mood;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 /**
- * Created by Corina on 5/20/2017.
+ * @author Stănilă Ioan, 5/22/2017.
  */
-@Document
-public class Mood {
+public class MoodDto {
 
-    @Id
     private String color;
     private String mood;
 
-    public Mood() {
+    public MoodDto() {
     }
 
-    public Mood(String color, String mood) {
+    public MoodDto(String color, String mood) {
         this.color = color;
         this.mood = mood;
     }
