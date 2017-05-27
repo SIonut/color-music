@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/new_email"
+        android:layout_width="130px"
+        android:layout_height="50px"
+        android:layout_alignBaseline="@+id/email"
+        android:layout_alignBottom="@+id/email"
+        android:layout_toStartOf="@+id/email"
+        android:text="e-mail: "
+        android:textSize="40px" />
+
+    <Button
+        android:id="@+id/create"
+        android:layout_width="300px"
+        android:layout_height="wrap_content"
+        android:text="LOG IN"
+        android:layout_marginTop="52dp"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/new_password"
+        android:layout_width="190px"
+        android:layout_height="50px"
+        android:text="password:"
+        android:textSize="40px"
+        android:layout_alignBaseline="@+id/password"
+        android:layout_alignBottom="@+id/password"
+        android:layout_toStartOf="@+id/password" />
+
+    <TextView
+        android:id="@+id/account"
+        android:layout_width="240px"
+        android:layout_height="50px"
+        android:layout_below="@+id/create"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="   create account"
+        android:textColor="@color/colorAccent"
+        android:textSize="30px" />
+
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:layout_alignBottom="@+id/password"
+        android:layout_marginBottom="80dp"
+        android:layout_alignEnd="@+id/password"
+        android:layout_alignStart="@+id/password" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:textSize="30px"
+        android:inputType="textPassword"
+        android:layout_marginTop="207dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/account" />
+
+</RelativeLayout>
