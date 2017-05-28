@@ -2,20 +2,15 @@ package saci.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
-import saci.backend.mood.ColorToMoodService;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
+import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
 @SpringBootApplication
-public class BackendApplication implements ApplicationContextInitializer {
+@EnableResourceServer
+@EnableOAuth2Client
+public class BackendApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
 	}
-
-    @Override
-    public void initialize(ConfigurableApplicationContext applicationContext) {
-        ColorToMoodService service = applicationContext.getBeanFactory().getBean(ColorToMoodService.class);
-        service.insert();
-    }
 }

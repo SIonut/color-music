@@ -14,7 +14,7 @@ public class ColorToMoodService {
     private static final List<Mood> COLOR_TO_MOOD_MAP = Arrays.asList(
             new Mood("#FF0000", "angry"),
             new Mood("#00FF00", "sad"),
-            new Mood("#00FF00", "happy")
+            new Mood("#0000FF", "happy")
     );
 
     private final MoodRepository moodRepository;
@@ -24,6 +24,9 @@ public class ColorToMoodService {
     }
 
     public void insert() {
-        moodRepository.insert(COLOR_TO_MOOD_MAP);
+        List<Mood> all = moodRepository.findAll();
+        if (all.isEmpty()) {
+            moodRepository.insert(COLOR_TO_MOOD_MAP);
+        }
     }
 }
