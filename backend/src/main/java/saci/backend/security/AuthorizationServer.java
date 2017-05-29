@@ -12,13 +12,14 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
 /**
  * @author Stănilă Ioan, 5/23/2017.
  */
 @Configuration
 @EnableAuthorizationServer
-public class Oauth2Configuration extends AuthorizationServerConfigurerAdapter {
+public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -30,10 +31,13 @@ public class Oauth2Configuration extends AuthorizationServerConfigurerAdapter {
     private int expiration;
 
     @Override
+    public void configure(AuthorizationServerSecurityConfigurer configurer) throws Exception {
+        configurer.checkTokenAccess("getAuthentication()");
+    }
+
+    @Override
     public void configure(AuthorizationServerEndpointsConfigurer config) throws Exception {
-        config
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+        config.authenticationManager(authenticationManager);
     }
 
     @Override
@@ -42,9 +46,8 @@ public class Oauth2Configuration extends AuthorizationServerConfigurerAdapter {
                 .withClient("android")
                 .secret("f04aaadb4f673684c003fec77d588967763656c0")
                 .accessTokenValiditySeconds(expiration)
-                .scopes("read", "write")
-                .authorizedGrantTypes("refresh_token")
-                .resourceIds("resource");
+                .scopes("write")
+                .authorizedGrantTypes("password", "refresh_token");
     }
 
     @Bean
