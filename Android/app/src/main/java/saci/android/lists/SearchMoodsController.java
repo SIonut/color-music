@@ -1,4 +1,4 @@
-package saci.android.search;
+package saci.android.lists;
 
 import java.util.ArrayList;
 
