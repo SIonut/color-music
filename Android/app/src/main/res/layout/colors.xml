@@ -303,17 +303,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ListView
-            android:id="@+id/playlist_navigator_list"
-            android:layout_below="@+id/playlist_navigator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
-
         <TextView
             android:id="@+id/following_navigator"
-            android:layout_below="@+id/playlist_navigator_list"
-            android:text="Your're following"
+            android:layout_below="@+id/playlist_navigator"
+            android:text="Following"
             android:textSize="25dp"
             android:paddingLeft="40px"
             android:textColor="#FE9FAA"
@@ -322,12 +315,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ListView
-            android:id="@+id/following_navigator_list"
+        <TextView
+            android:id="@+id/liked_navigator"
             android:layout_below="@+id/following_navigator"
+            android:text="Liked"
+            android:textSize="25dp"
+            android:paddingLeft="40px"
+            android:textColor="#FE9FAA"
+            android:fontFamily="casual"
+            android:textAlignment="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        </ListView>
+            android:layout_height="wrap_content" />
+
     </RelativeLayout>
 
     </android.support.design.widget.NavigationView>

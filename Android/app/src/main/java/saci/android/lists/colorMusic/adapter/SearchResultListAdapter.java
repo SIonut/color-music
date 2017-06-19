@@ -1,4 +1,4 @@
-package saci.android.search.adapter;
+package saci.android.lists.colorMusic.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -27,7 +27,7 @@ public class SearchResultListAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        String  item = getItem(position);
+        String item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);

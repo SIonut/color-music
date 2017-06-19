@@ -1,4 +1,4 @@
-package saci.android.search.adapter;
+package saci.android.lists.colorMusic.adapter;
 
 /**
  * Created by Corina on 5/26/2017.
