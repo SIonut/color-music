@@ -26,4 +26,13 @@ public class MoodService {
         moodRepository.findAll().forEach(mood -> dtoList.add(modelMapper.map(mood, MoodDto.class)));
         return dtoList;
     }
+
+    public MoodDto findByColor(String color) {
+        Mood mood = moodRepository.findOne("#" + color);
+        if (mood == null) {
+            return null;
+        }
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(mood, MoodDto.class);
+    }
 }

@@ -27,5 +27,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
     compile("org.springframework.security.oauth:spring-security-oauth2:2.0.8.RELEASE")
 	compile group: 'org.modelmapper', name: 'modelmapper', version: '0.7.5'
+    compile 'org.jsoup:jsoup:1.10.3'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
