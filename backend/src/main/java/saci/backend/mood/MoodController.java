@@ -38,15 +38,15 @@ public class MoodController {
     }
 
     @RequestMapping(value = "/8tracks/{colors}")
-    public ResponseEntity<List<SongDto>> searchByColors(@PathVariable String[] colors) {
+    public ResponseEntity<List<SongDto>> searchByColors(@PathVariable List<String> colors) {
         SongDto songDto = new SongDto();
         songDto.setId("0");
         songDto.setLink("https://www.youtube.com/watch?v=06H_6oI4EK4");
-        songDto.setColor(Arrays.asList(colors));
+        songDto.setColor(colors);
         SongDto songDto1 = new SongDto();
         songDto1.setId("0");
         songDto1.setLink("https://www.youtube.com/watch?v=IRY93xEjSfw");
-        songDto1.setColor(Arrays.asList(colors));
+        songDto1.setColor(colors);
         return new ResponseEntity<>(Arrays.asList(songDto, songDto1), HttpStatus.OK);
     }
 }
