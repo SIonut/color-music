@@ -3,9 +3,7 @@ package saci.backend.song;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saci.backend.eight.tracks.EightTracksService;
-import saci.backend.mood.Mood;
 import saci.backend.mood.MoodDto;
-import saci.backend.mood.MoodRepository;
 import saci.backend.mood.MoodService;
 
 import java.util.List;
