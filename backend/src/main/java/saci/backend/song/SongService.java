@@ -1,5 +1,6 @@
 package saci.backend.song;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import saci.backend.eight.tracks.EightTracksService;
@@ -43,6 +44,16 @@ public class SongService {
                     dto.setColor(colors);
                     return dto;
                 })
+                .collect(Collectors.toList());
+    }
+
+    public List<SongDto> findInDb(List<String> colors) {
+        List<String> color = colors.stream()
+                .map(it -> "#" + it)
+                .collect(Collectors.toList());
+        ModelMapper modelMapper = new ModelMapper();
+        return songRepository.findByColor(color).stream()
+                .map(it -> modelMapper.map(it, SongDto.class))
                 .collect(Collectors.toList());
     }
 }

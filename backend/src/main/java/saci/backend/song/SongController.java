@@ -25,6 +25,6 @@ public class SongController {
 
     @RequestMapping(value = "/{colors}")
     public ResponseEntity<List<SongDto>> testSearchByColors(@PathVariable List<String> colors) {
-        return new ResponseEntity<>(songService.findOnline(colors), HttpStatus.OK);
+        return new ResponseEntity<>(songService.findInDb(colors), HttpStatus.OK);
     }
 }
