@@ -59,17 +59,6 @@ public class SongService {
             String youtubeLink = webDriver.findElement(By.id("mix_youtube_embed")).getAttribute("src");
             songs.add(getBuiltSong(youtubeLink, Collections.singletonList(mood.getColor())));
 
-//            WebElement skipButton = webDriver.findElement(By.id("youtube_skip_button"));
-//            int tracksCount = Integer.parseInt(webDriver.findElement(By.id("tracks_count")).getAttribute("textContent").split(" ")[0]);
-//            int j = 0;
-//            do {
-//                String youtubeLink = webDriver.findElement(By.id("mix_youtube_embed")).getAttribute("src");
-//                songs.add(getBuiltSong(youtubeLink, Collections.singletonList(mood.getColor())));
-//
-//                skipButton.click();
-//                webDriver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
-//            } while (j++ < tracksCount);
-
             webDriver.navigate().back();
             mixUrls = webDriver.findElements(By.className("mix_square"));
             i++;
@@ -89,3 +78,16 @@ public class SongService {
         return split[0].replace("embed/", "watch?v=");
     }
 }
+
+// Code for including each song in playlist
+// Currently not working because of some iframe in the targeted website
+//            WebElement skipButton = webDriver.findElement(By.id("youtube_skip_button"));
+//            int tracksCount = Integer.parseInt(webDriver.findElement(By.id("tracks_count")).getAttribute("textContent").split(" ")[0]);
+//            int j = 0;
+//            do {
+//                String youtubeLink = webDriver.findElement(By.id("mix_youtube_embed")).getAttribute("src");
+//                songs.add(getBuiltSong(youtubeLink, Collections.singletonList(mood.getColor())));
+//
+//                skipButton.click();
+//                webDriver.manage().timeouts().implicitlyWait(500, TimeUnit.MILLISECONDS);
+//            } while (j++ < tracksCount);
