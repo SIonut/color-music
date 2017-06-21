@@ -1,4 +1,4 @@
-package saci.android.lists.colorMusic;
+package saci.android.music;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,13 +9,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import saci.android.R;
 import saci.android.colors.ColorsActivity;
-import saci.android.lists.ResultDetails;
-import saci.android.lists.SearchMoodsController;
-import saci.android.lists.colorMusic.adapter.SearchResultListAdapter;
+import saci.android.music.adapter.SearchResultListAdapter;
+import saci.android.song.ResultDetails;
+import saci.android.song.SearchMoodsController;
 
 /**
  * Created by Corina on 5/25/2017.
@@ -24,23 +28,29 @@ public class ColorMusicResultActivity extends AppCompatActivity {
 
     private SearchMoodsController searchMoodsController;
 
-    private String moods;
-    private ArrayList<String> moodsList;
+    private String songs;
+    private ArrayList<String> songsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_list);
 
-        moods = getIntent().getStringExtra("moods");
-        System.out.print("RESULT TO UI " + moods + "\n");
+        songsList = new ArrayList<>();
+        songs = getIntent().getStringExtra("songs");
 
-        moodsList = new ArrayList<>();
-        moodsList.add("happy");
-        moodsList.add("sad");
-        searchMoodsController = new SearchMoodsController(moodsList);
+        try {
+            JSONArray songsArray = new JSONArray(songs);
+            for (int i=0; i<songsArray.length(); i++) {
+                JSONObject song = songsArray.getJSONObject(i);
+                songsList.add(song.getString("link"));
+            }
 
-        createListAdapter();
+            createListAdapter();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -52,7 +62,7 @@ public class ColorMusicResultActivity extends AppCompatActivity {
     }
 
     private void createListAdapter() {
-        ArrayAdapter adapter = new SearchResultListAdapter(this, moodsList);
+        ArrayAdapter adapter = new SearchResultListAdapter(this, songsList);
 
         ListView listView = (ListView) findViewById(R.id.y);
         listView.setAdapter(adapter);
@@ -64,6 +74,7 @@ public class ColorMusicResultActivity extends AppCompatActivity {
                 startActivity(detailsIntent);
             }
         });
+
     }
 
 }

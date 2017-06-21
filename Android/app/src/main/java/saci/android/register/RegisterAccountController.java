@@ -1,14 +1,14 @@
-package saci.android.account;
+package saci.android.register;
 
 /**
  * Created by Corina on 5/25/2017.
  */
 
-public class NewAccountController {
+public class RegisterAccountController {
 
 
 
-    public NewAccountController() {
+    public RegisterAccountController() {
     }
 
 

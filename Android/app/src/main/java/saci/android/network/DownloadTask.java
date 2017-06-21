@@ -1,4 +1,4 @@
-package saci.android.lists;
+package saci.android.network;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import saci.android.lists.colorMusic.ColorMusicResultActivity;
+import saci.android.music.ColorMusicResultActivity;
 
 /**
  * Created by corina on 17.06.2017.
@@ -29,16 +29,6 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
      */
     @Override
     protected void onPreExecute() {
-//        if (mCallback != null) {
-//            NetworkInfo networkInfo = mCallback.getActiveNetworkInfo();
-//            if (networkInfo == null || !networkInfo.isConnected() ||
-//                    (networkInfo.getType() != ConnectivityManager.TYPE_WIFI
-//                            && networkInfo.getType() != ConnectivityManager.TYPE_MOBILE)) {
-//                 If no connectivity, cancel task and update Callback with null data.
-//                mCallback.updateFromDownload(null);
-//                cancel(true);
-//            }
-//        }
     }
 
     /**
@@ -71,7 +61,7 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         if (result != "") {
             Intent findIntent = new Intent(context, ColorMusicResultActivity.class);
-            findIntent.putExtra("moods", result);
+            findIntent.putExtra("songs", result);
             context.startActivity(findIntent);
         }
     }
@@ -89,7 +79,7 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
 
         try {
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-            result = readStream(in, 1000);
+            result = readStream(in, 5000);
         } finally {
             urlConnection.disconnect();
         }
