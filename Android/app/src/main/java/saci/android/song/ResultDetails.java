@@ -1,12 +1,10 @@
-package saci.android.lists;
+package saci.android.song;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.VideoView;
 
 import saci.android.R;
 

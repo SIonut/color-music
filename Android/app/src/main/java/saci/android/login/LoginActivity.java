@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import saci.android.ChangeActivity;
 import saci.android.R;
-import saci.android.account.NewAccountActivity;
+import saci.android.register.RegisterAccountActivity;
 import saci.android.colors.ColorsActivity;
 
 public class LoginActivity extends AppCompatActivity implements ChangeActivity {
@@ -76,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements ChangeActivity {
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent newAccountIntent = new Intent(LoginActivity.this, NewAccountActivity.class);
+                Intent newAccountIntent = new Intent(LoginActivity.this, RegisterAccountActivity.class);
                 startActivity(newAccountIntent);
             }
         });

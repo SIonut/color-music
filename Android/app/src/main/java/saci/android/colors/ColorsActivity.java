@@ -11,15 +11,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import saci.android.ChangeActivity;
 import saci.android.R;
-import saci.android.colors.drawer.FollowingActivity;
-import saci.android.colors.drawer.LikedActivity;
-import saci.android.colors.drawer.PlaylistsActivity;
-import saci.android.lists.NetworkFragment;
-import saci.android.lists.colorMusic.ColorMusicResultActivity;
+import saci.android.following.FollowingListActivity;
+import saci.android.liked.LikedListActivity;
+import saci.android.network.NetworkFragment;
+import saci.android.playlists.PlaylistsListActivity;
 
 /**
  * Created by Corina on 5/25/2017.
@@ -33,6 +31,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
     private TextView selectedMoodsView;
     private Button findButton;
     private List<Button> buttons = new ArrayList<>();
+    private List<Button> selectedButtons = new ArrayList<>();
 
     private ArrayList<String> selectedMoods = new ArrayList<>();
 
@@ -46,6 +45,8 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.colors);
         context = this;
+
+        selectedButtons = new ArrayList<>();
 
         drawerPlaylists = (TextView) findViewById(R.id.playlist_navigator);
         drawerFollowing = (TextView) findViewById(R.id.following_navigator);
@@ -87,12 +88,27 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
                 @Override
                 public void onClick(View v) {
                     if (!selectedMoods.contains(b.getText())) {
-                        if (!selectedMoods.isEmpty()) {
-                            selectedMoodsView.append(" & " + b.getText());
-                            selectedMoods.add((String) b.getText());
-                        } else {
-                            selectedMoodsView.append(b.getText());
-                            selectedMoods.add((String) b.getText());
+                        if (selectedButtons.size() < 3) {
+                            if (!selectedMoods.isEmpty()) {
+                                selectedMoodsView.append(" " + b.getText());
+                                selectedMoods.add((String) b.getHint());
+                            } else {
+                                selectedMoodsView.append(b.getText());
+                                selectedMoods.add((String) b.getHint());
+                            }
+                            selectedButtons.add(b);
+                        }
+                    } else {
+                        selectedButtons.remove(b);
+                        selectedMoodsView.setText("");
+                        for (Button b : selectedButtons) {
+                            if (!selectedMoods.isEmpty()) {
+                                selectedMoodsView.append(" " + b.getText());
+                                selectedMoods.add((String) b.getHint());
+                            } else {
+                                selectedMoodsView.append(b.getText());
+                                selectedMoods.add((String) b.getHint());
+                            }
                         }
                     }
                 }
@@ -105,7 +121,15 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mNetworkFragment = NetworkFragment.getInstance("http://188.24.72.122:8080/api/moods/[FF0000, FF9999]", context);
+                String link = "http://188.24.72.122:8080/api/songs/";
+
+                for (int i=0; i < selectedMoods.size()-1; i++) {
+                    link += selectedMoods.get(i) + ",";
+                }
+
+                link += selectedMoods.get(selectedMoods.size()-1);
+
+                mNetworkFragment = NetworkFragment.getInstance(link, context);
                 startDownload();
                 finish();
             }
@@ -124,25 +148,24 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         drawerFollowing.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent followIntent = new Intent(ColorsActivity.this, FollowingActivity.class);
+                Intent followIntent = new Intent(ColorsActivity.this, FollowingListActivity.class);
                 startActivity(followIntent);
             }
         });
         drawerPlaylists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent playlistIntent = new Intent(ColorsActivity.this, PlaylistsActivity.class);
+                Intent playlistIntent = new Intent(ColorsActivity.this, PlaylistsListActivity.class);
                 startActivity(playlistIntent);
             }
         });
         drawerLiked.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent likedIntent = new Intent(ColorsActivity.this, LikedActivity.class);
+                Intent likedIntent = new Intent(ColorsActivity.this, LikedListActivity.class);
                 startActivity(likedIntent);
             }
         });
     }
-
 
 }

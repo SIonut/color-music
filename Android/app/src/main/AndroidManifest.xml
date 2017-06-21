@@ -23,11 +23,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".lists.ResultDetails"
+            android:name=".song.ResultDetails"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".account.NewAccountActivity"
+            android:name=".register.RegisterAccountActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
@@ -37,22 +37,22 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".lists.colorMusic.ColorMusicResultActivity"
+            android:name=".music.ColorMusicResultActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".colors.drawer.FollowingActivity"
+            android:name=".following.FollowingListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".colors.drawer.PlaylistsActivity"
+            android:name=".playlists.PlaylistsListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".colors.drawer.LikedActivity"
+            android:name=".liked.LikedListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>

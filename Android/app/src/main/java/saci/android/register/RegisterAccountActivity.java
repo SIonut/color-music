@@ -1,4 +1,4 @@
-package saci.android.account;
+package saci.android.register;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,9 +15,9 @@ import saci.android.colors.ColorsActivity;
  * Created by Corina on 5/25/2017.
  */
 
-public class NewAccountActivity extends AppCompatActivity implements ChangeActivity {
+public class RegisterAccountActivity extends AppCompatActivity implements ChangeActivity {
 
-    private NewAccountController newAccountController;
+    private RegisterAccountController registerAccountController;
 
     private Button createAccount;
 
@@ -27,7 +27,7 @@ public class NewAccountActivity extends AppCompatActivity implements ChangeActiv
         setContentView(R.layout.new_account);
 
         createAccount = (Button) findViewById(R.id.create_account);
-        newAccountController = new NewAccountController();
+        registerAccountController = new RegisterAccountController();
 
         changeActivity();
     }
@@ -37,8 +37,8 @@ public class NewAccountActivity extends AppCompatActivity implements ChangeActiv
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (newAccountController.createAccout()) {
-                    Intent createAccountIntent = new Intent(NewAccountActivity.this, ColorsActivity.class);
+                if (registerAccountController.createAccout()) {
+                    Intent createAccountIntent = new Intent(RegisterAccountActivity.this, ColorsActivity.class);
                     startActivity(createAccountIntent);
                 }
             }
