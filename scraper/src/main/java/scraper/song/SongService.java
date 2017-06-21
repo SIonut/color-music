@@ -57,7 +57,12 @@ public class SongService {
             webDriver.manage().timeouts().implicitlyWait(300, TimeUnit.MILLISECONDS);
 
             String youtubeLink = webDriver.findElement(By.id("mix_youtube_embed")).getAttribute("src");
-            songs.add(getBuiltSong(youtubeLink, Collections.singletonList(mood.getColor())));
+            webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
+            String title = webDriver.findElement(By.className("title_artist")).findElement(By.className("t")).getText();
+            webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
+            String artist = webDriver.findElement(By.className("title_artist")).findElement(By.className("a")).getText();
+            webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
+            songs.add(getBuiltSong(youtubeLink, title, artist, Collections.singletonList(mood.getColor())));
 
             webDriver.navigate().back();
             mixUrls = webDriver.findElements(By.className("mix_square"));
@@ -66,9 +71,11 @@ public class SongService {
         return songs;
     }
 
-    private Song getBuiltSong(String link, List<String> colors) {
+    private Song getBuiltSong(String link, String title, String artist, List<String> colors) {
         Song song = new Song();
         song.setLink(cleanYouTubeLink(link));
+        song.setTitle(title);
+        song.setAuthor(artist);
         song.setColor(colors);
         return song;
     }
