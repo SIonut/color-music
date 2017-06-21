@@ -12,9 +12,9 @@ import java.util.List;
 public class ColorToMoodService {
 
     private static final List<Mood> COLOR_TO_MOOD_MAP = Arrays.asList(
-            new Mood("#FF0000", "angry"),
-            new Mood("#00FF00", "sad"),
-            new Mood("#0000FF", "happy")
+            new Mood("FF0000", "angry"),
+            new Mood("00FF00", "sad"),
+            new Mood("0000FF", "happy")
     );
 
     private final MoodRepository moodRepository;

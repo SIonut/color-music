@@ -18,7 +18,7 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
         super.configure(http);
         http
                 .authorizeRequests()
-                .antMatchers("/api/users/register").permitAll()
+                //.antMatchers("/api/users/register").permitAll()
                 .anyRequest().permitAll();//.access("#oauth2.hasScope('write')");
     }
 
