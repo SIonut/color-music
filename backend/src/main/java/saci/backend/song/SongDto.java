@@ -9,6 +9,8 @@ public class SongDto {
 
     private String id;
     private String link;
+    private String title;
+    private String author;
     private List<String> color;
 
     public String getId() {
@@ -25,6 +27,22 @@ public class SongDto {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public List<String> getColor() {
