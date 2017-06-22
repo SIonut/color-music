@@ -47,7 +47,9 @@ public class SongDetails extends AppCompatActivity {
         song = (Song) getIntent().getSerializableExtra("song");
         // TODO interrogate database
 
-        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420\" height=\"315\" src=\"http://www.youtube.com/embed/" + "PIhIc_ehSdU" + "?autoplay=1&vq=small\" frameborder=\"0\" allowfullscreen></iframe></body></html>";
+        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420px\" height=\"315px\" " +
+                "src=\" " + song.getLink() + "?autoplay=1&vq=small\" " +
+                "frameborder=\"0\" allowfullscreen></iframe></body></html>";
 
         mWebView = (WebView) findViewById(R.id.videoView);
         mWebView.getSettings().setJavaScriptEnabled(true);
