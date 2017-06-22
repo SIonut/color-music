@@ -38,13 +38,13 @@ public class SongService {
         webDriver = new ChromeDriver();
         moods.forEach(mood -> {
             webDriver.navigate().to(URL + mood.getMood());
-            List<Song> songs = findMusicForMood(mood);
+            List<Song> songs = findMusicForMood(mood.getColor());
             songRepository.save(songs);
         });
         webDriver.quit();
     }
 
-    private List<Song> findMusicForMood(Mood mood) {
+    private List<Song> findMusicForMood(String mood) {
         List<Song> songs = new ArrayList<>();
         List<WebElement> mixUrls = webDriver.findElements(By.className("mix_square"));
         int playlistCount = mixUrls.size();
@@ -62,7 +62,7 @@ public class SongService {
             webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
             String artist = webDriver.findElement(By.className("title_artist")).findElement(By.className("a")).getText();
             webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
-            songs.add(getBuiltSong(youtubeLink, title, artist, Collections.singletonList(mood.getColor())));
+            songs.add(getBuiltSong(youtubeLink, title, artist, Collections.singletonList(mood)));
 
             webDriver.navigate().back();
             mixUrls = webDriver.findElements(By.className("mix_square"));
