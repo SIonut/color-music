@@ -1,13 +1,13 @@
 package saci.android.dtos.builder;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import saci.android.dtos.Song;
 
 /**
  * Created by corina on 22.06.2017.
  */
-
 public class SongBuilder {
 
     private Song song;
@@ -16,7 +16,7 @@ public class SongBuilder {
     private String link;
     private String title;
     private String author;
-    private List<String> color;
+    private String colors;
 
     public SongBuilder() {
         song = new Song();
@@ -42,8 +42,10 @@ public class SongBuilder {
         return this;
     }
 
-    public SongBuilder setColor(List<String> color) {
-        song.setColor(color);
+    public SongBuilder setColor(JSONObject colors) {
+//        JSONArray colorsList = colors.getJSONArray();
+//        for
+//        song.setColor(color);
         return this;
     }
 

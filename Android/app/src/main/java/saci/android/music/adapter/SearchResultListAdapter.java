@@ -40,5 +40,5 @@ public class SearchResultListAdapter extends ArrayAdapter<Song> {
         songAuthor.setText(item.getAuthor());
 
         return convertView;
-    }
+}
 }
