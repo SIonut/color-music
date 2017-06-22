@@ -25,8 +25,12 @@ public class FollowingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.following_list);
 
-        followedPlaylists = new ArrayList<>();
+        following();
+        createListAdapter();
+    }
 
+    private void following() {
+        followedPlaylists = new ArrayList<>();
     }
 
     private void createListAdapter() {

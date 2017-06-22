@@ -1,11 +1,12 @@
 package saci.android.dtos;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Corina on 5/20/2017.
  */
-public class Playlist {
+public class Playlist implements Serializable{
 
     private String id;
     private String userId;

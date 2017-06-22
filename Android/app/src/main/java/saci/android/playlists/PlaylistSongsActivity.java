@@ -13,34 +13,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Playlist;
-import saci.android.playlists.adapter.PlaylistListAdapter;
+import saci.android.dtos.Song;
+import saci.android.playlists.adapter.PlaylistsSongsAdapter;
+import saci.android.song.SongDetails;
 
 /**
- * Created by corina on 21.06.2017.
+ * Created by corina on 22.06.2017.
  */
-public class PlaylistsListActivity extends AppCompatActivity {
+public class PlaylistSongsActivity extends AppCompatActivity {
 
-    private List<Playlist> playlistsList;
+    private List<Song> playlistSongList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.playlists_list);
 
-        playlists();
+        playlistSongs();
         createListAdapter();
     }
 
-    private void playlists() {
-        playlistsList = new ArrayList<>();
+    private void playlistSongs() {
+        playlistSongList = new ArrayList<>();
 
         // TODO interrogate database
 
     }
 
     private void createListAdapter() {
-        ArrayAdapter adapter = new PlaylistListAdapter(this, playlistsList);
+        ArrayAdapter adapter = new PlaylistsSongsAdapter(this, playlistSongList);
 
         ListView listView = (ListView) findViewById(R.id.y);
         listView.setAdapter(adapter);
@@ -48,9 +48,9 @@ public class PlaylistsListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent playlistSongsIntent = new Intent(PlaylistsListActivity.this, PlaylistSongsActivity.class);
-                playlistSongsIntent.putExtra("playlist", playlistsList.get(position));
-                startActivity(playlistSongsIntent);
+                Intent detailsIntent = new Intent(PlaylistSongsActivity.this, SongDetails.class);
+                detailsIntent.putExtra("song", playlistSongList.get(position));
+                startActivity(detailsIntent);
             }
         });
 

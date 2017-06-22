@@ -17,19 +17,18 @@ import java.util.ArrayList;
 
 import saci.android.R;
 import saci.android.colors.ColorsActivity;
+import saci.android.dtos.Song;
+import saci.android.dtos.builder.SongBuilder;
 import saci.android.music.adapter.SearchResultListAdapter;
-import saci.android.song.ResultDetails;
-import saci.android.song.SearchMoodsController;
+import saci.android.song.SongDetails;
 
 /**
  * Created by Corina on 5/25/2017.
  */
 public class ColorMusicResultActivity extends AppCompatActivity {
 
-    private SearchMoodsController searchMoodsController;
-
-    private String songs;
-    private ArrayList<String> songsList;
+    private String songsResponse;
+    private ArrayList<Song> songsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,13 +36,20 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         setContentView(R.layout.results_list);
 
         songsList = new ArrayList<>();
-        songs = getIntent().getStringExtra("songs");
+        songsResponse = getIntent().getStringExtra("songs");
 
         try {
-            JSONArray songsArray = new JSONArray(songs);
+            JSONArray songsArray = new JSONArray(songsResponse);
             for (int i=0; i<songsArray.length(); i++) {
-                JSONObject song = songsArray.getJSONObject(i);
-                songsList.add(song.getString("link"));
+                JSONObject songObject = songsArray.getJSONObject(i);
+                Song song = new SongBuilder()
+                        .setAuthor(songObject.getString("author"))
+                        .setColor(songObject.getString("color"))
+                        .setLink(songObject.getString("link"))
+                        .setTitle(songObject.getString("title"))
+                        .setId(songObject.getString("id"))
+                        .build();
+                songsList.add(song);
             }
 
             createListAdapter();
@@ -70,7 +76,8 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailsIntent = new Intent(ColorMusicResultActivity.this, ResultDetails.class);
+                Intent detailsIntent = new Intent(ColorMusicResultActivity.this, SongDetails.class);
+                detailsIntent.putExtra("song", songsList.get(position));
                 startActivity(detailsIntent);
             }
         });
