@@ -44,7 +44,7 @@ public class ColorMusicResultActivity extends AppCompatActivity {
                 JSONObject songObject = songsArray.getJSONObject(i);
                 Song song = new SongBuilder()
                         .setAuthor(songObject.getString("author"))
-                        .setColor(songObject.getString("color"))
+                        .setColor(songObject.getJSONObject("color"))
                         .setLink(songObject.getString("link"))
                         .setTitle(songObject.getString("title"))
                         .setId(songObject.getString("id"))
