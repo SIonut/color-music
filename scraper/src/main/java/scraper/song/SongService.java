@@ -1,18 +1,22 @@
 package scraper.song;
 
+import org.apache.xerces.xs.StringList;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import scraper.math.Subsets;
 import scraper.mood.Mood;
 import scraper.mood.MoodRepository;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @author Stănilă Ioan, 5/22/2017.
@@ -36,15 +40,21 @@ public class SongService {
     public void scrape() {
         List<Mood> moods = moodRepository.findAll();
         webDriver = new ChromeDriver();
-        moods.forEach(mood -> {
-            webDriver.navigate().to(URL + mood.getMood());
-            List<Song> songs = findMusicForMood(mood.getColor());
+
+        List<List<Mood>> moodSubsets = (new Subsets<>(moods)).generateSubsets();
+
+        moodSubsets.forEach(subset -> {
+            Optional<String> moodRelativeLink = subset.stream().map(it -> it.getMood()).reduce((a, b) -> a + "+" + b);
+            webDriver.navigate().to(URL + moodRelativeLink);
+            List<String> colors = subset.stream().map(it -> it.getColor()).collect(Collectors.toList());
+            List<Song> songs = findMusicForMood(colors);
             songRepository.save(songs);
         });
+
         webDriver.quit();
     }
 
-    private List<Song> findMusicForMood(String mood) {
+    private List<Song> findMusicForMood(List<String> colors) {
         List<Song> songs = new ArrayList<>();
         List<WebElement> mixUrls = webDriver.findElements(By.className("mix_square"));
         int playlistCount = mixUrls.size();
@@ -62,7 +72,7 @@ public class SongService {
             webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
             String artist = webDriver.findElement(By.className("title_artist")).findElement(By.className("a")).getText();
             webDriver.manage().timeouts().implicitlyWait(100, TimeUnit.MILLISECONDS);
-            songs.add(getBuiltSong(youtubeLink, title, artist, Collections.singletonList(mood)));
+            songs.add(getBuiltSong(youtubeLink, title, artist, colors));
 
             webDriver.navigate().back();
             mixUrls = webDriver.findElements(By.className("mix_square"));
