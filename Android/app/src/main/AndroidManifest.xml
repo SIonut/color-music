@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".song.ResultDetails"
+            android:name=".song.SongDetails"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity

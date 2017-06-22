@@ -27,8 +27,14 @@ public class LikedListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_list);
 
+        liked();
+        createListAdapter();
+    }
+
+    private void liked() {
         likedList = new ArrayList<>();
 
+        // TODO interrogate database
     }
 
     private void createListAdapter() {

@@ -1,4 +1,4 @@
-package saci.android.playlists.adapter;
+package saci.android.song;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,15 +11,14 @@ import java.util.List;
 
 import saci.android.R;
 import saci.android.dtos.Playlist;
-import saci.android.playlists.PlaylistsListActivity;
 
 /**
- * Created by corina on 21.06.2017.
+ * Created by corina on 22.06.2017.
  */
-public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
+public class ChoosePlaylistPopUpAdapter extends ArrayAdapter<Playlist> {
 
-    public PlaylistListAdapter(PlaylistsListActivity playlistsListActivity, List<Playlist> playlistsList) {
-        super(playlistsListActivity, 0, playlistsList);
+    public ChoosePlaylistPopUpAdapter(View view, List<Playlist> resource) {
+        super(view.getContext(), 0, resource);
     }
 
     @NonNull
@@ -32,7 +31,11 @@ public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-
+//        TextView songTitle = (TextView) convertView.findViewById(R.id.song_title);
+//        TextView songAuthor = (TextView) convertView.findViewById(R.id.song_author);
+//
+//        songTitle.setText(item.getTitle());
+//        songAuthor.setText(item.getAuthor());
 
         return convertView;
     }
