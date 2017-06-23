@@ -9,11 +9,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import saci.android.R;
 import saci.android.colors.ColorsActivity;
@@ -39,21 +44,9 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         songsResponse = getIntent().getStringExtra("songs");
 
         try {
-            JSONArray songsArray = new JSONArray(songsResponse);
-            for (int i=0; i<songsArray.length(); i++) {
-                JSONObject songObject = songsArray.getJSONObject(i);
-                Song song = new SongBuilder()
-                        .setAuthor(songObject.getString("author"))
-                        .setColor(songObject.getJSONObject("color"))
-                        .setLink(songObject.getString("link"))
-                        .setTitle(songObject.getString("title"))
-                        .setId(songObject.getString("id"))
-                        .build();
-                songsList.add(song);
-            }
-
+            songsList = new ObjectMapper().readValue(songsResponse, new TypeReference<List<Song>>(){});
             createListAdapter();
-        } catch (JSONException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

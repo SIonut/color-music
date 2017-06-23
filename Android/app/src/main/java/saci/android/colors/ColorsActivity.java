@@ -87,28 +87,20 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
             b.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (!selectedMoods.contains(b.getText())) {
+                    if (!selectedMoods.contains(b.getHint())) {
                         if (selectedButtons.size() < 3) {
-                            if (!selectedMoods.isEmpty()) {
-                                selectedMoodsView.append(" " + b.getText());
-                                selectedMoods.add((String) b.getHint());
-                            } else {
-                                selectedMoodsView.append(b.getText());
-                                selectedMoods.add((String) b.getHint());
-                            }
+                            selectedMoodsView.append(selectedMoods.isEmpty() ? "" : " ");
+                            selectedMoodsView.append(b.getText());
+                            selectedMoods.add((String) b.getHint());
                             selectedButtons.add(b);
                         }
                     } else {
                         selectedButtons.remove(b);
+                        selectedMoods.remove(b.getHint());
                         selectedMoodsView.setText("");
                         for (Button b : selectedButtons) {
-                            if (!selectedMoods.isEmpty()) {
-                                selectedMoodsView.append(" " + b.getText());
-                                selectedMoods.add((String) b.getHint());
-                            } else {
-                                selectedMoodsView.append(b.getText());
-                                selectedMoods.add((String) b.getHint());
-                            }
+                            selectedMoodsView.append(selectedMoods.isEmpty() ? "" : " ");
+                            selectedMoodsView.append(b.getText());
                         }
                     }
                 }
@@ -121,7 +113,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = "http://188.24.72.122:8080/api/songs/";
+                String link = "http://172.24.30.49:8080/api/songs/";
 
                 for (int i=0; i < selectedMoods.size()-1; i++) {
                     link += selectedMoods.get(i) + ",";
