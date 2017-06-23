@@ -32,7 +32,7 @@ public class Subsets<T> {
 
         if (k == 1) {
             return items.stream()
-                    .map(it -> Collections.singletonList(it))
+                    .map(Collections::singletonList)
                     .collect(Collectors.toList());
         } else if (k == 2) {
             return  generate2Subsets();

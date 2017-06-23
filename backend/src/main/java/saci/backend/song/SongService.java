@@ -48,11 +48,8 @@ public class SongService {
     }
 
     public List<SongDto> findInDb(List<String> colors) {
-        List<String> color = colors.stream()
-                .map(it -> "#" + it)
-                .collect(Collectors.toList());
         ModelMapper modelMapper = new ModelMapper();
-        return songRepository.findByColor(color).stream()
+        return songRepository.findByColor(colors).stream()
                 .map(it -> modelMapper.map(it, SongDto.class))
                 .collect(Collectors.toList());
     }
