@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Stănilă Ioan, 5/22/2017.
@@ -53,16 +54,17 @@ public class PlaylistService {
 
     public PlaylistDto update(PlaylistDto dto) {
         ModelMapper modelMapper = new ModelMapper();
-        List<Playlist> allOfUser = playlistRepository.findByUserId(dto.getUserId());
-        boolean isUnique = allOfUser.stream().noneMatch(it -> it.getName().equals(dto.getName()));
-        if (!isUnique) {
-            return null;
-        }
         Playlist saved = playlistRepository.save(modelMapper.map(dto, Playlist.class));
         return modelMapper.map(saved, PlaylistDto.class);
     }
 
     public void delete(String id) {
         playlistRepository.delete(id);
+    }
+
+    public List<PlaylistDto> findByUserId(String userId) {
+        return playlistRepository.findByUserId(userId).stream()
+                .map(it -> new ModelMapper().map(it, PlaylistDto.class))
+                .collect(Collectors.toList());
     }
 }

@@ -58,4 +58,9 @@ public class PlaylistController {
         playlistService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/{userId}/playlists")
+    public ResponseEntity<List<PlaylistDto>> getPlaylists(@PathVariable String userId) {
+        return new ResponseEntity<>(playlistService.findByUserId(userId), HttpStatus.OK);
+    }
 }
