@@ -1,5 +1,7 @@
 package saci.android.song;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -9,18 +11,24 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.RadioButton;
 import android.view.ViewGroup.LayoutParams;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
 import saci.android.dtos.SongDto;
-import saci.android.network.NetworkFragment;
+import saci.android.network.SongsApi;
 
 /**
  * Created by Corina on 5/27/2017.
@@ -29,64 +37,78 @@ public class SongDetails extends AppCompatActivity {
 
     private SongDto song;
 
-    private NetworkFragment mNetworkFragment;
-
-    private RadioButton mLikeRadioButton;
-    private RadioButton mFollowRadioButton;
+    private CheckBox mLikeCheckBox;
     private Button mAddToPlaylistButton;
     private WebView mWebView;
+
+    private Retrofit retrofit;
+    private SongsApi songsApi;
+    private String userId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_detailed);
 
+        retrofit = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.base_link))
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+        songsApi = retrofit.create(SongsApi.class);
+
+        song = (SongDto) getIntent().getSerializableExtra("song");
+
+        SharedPreferences preferences = this.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
+        userId = preferences.getString("userId", new String());
+
         likeSongRadioButton();
-        followPlaylistRadioButton();
         addToPlaylistButton();
         songWebFrame();
-
-        mNetworkFragment = NetworkFragment.getInstance(R.string.base_link + "api/", this, null);
 
     }
 
     private void likeSongRadioButton() {
-        mLikeRadioButton = (RadioButton) findViewById(R.id.like_radio);
+        mLikeCheckBox = (CheckBox) findViewById(R.id.like_radio);
 
-        // TODO interrogate database
-        String likePlaylistLink = R.string.base_link + "api/playlists/";
-
-        mNetworkFragment.changeUrl(likePlaylistLink);
-        mNetworkFragment.startDownload();
-
-        mLikeRadioButton.setOnClickListener(new View.OnClickListener() {
+        songsApi.isLiked(userId, song.getId()).enqueue(new Callback<Boolean>() {
             @Override
-            public void onClick(View view) {
-                if (mLikeRadioButton.isChecked()) {
-                    mLikeRadioButton.setChecked(false);
-                    // TODO database update
-                } else {
-                    mLikeRadioButton.setChecked(true);
-                    // TODO database update
-                }
+            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                mLikeCheckBox.setChecked(response.body().booleanValue());
+            }
+
+            @Override
+            public void onFailure(Call<Boolean> call, Throwable t) {
+
             }
         });
-    }
 
-    private void followPlaylistRadioButton() {
-        mFollowRadioButton = (RadioButton) findViewById(R.id.follow_radio);
-
-        // TODO interrogate database
-
-        mFollowRadioButton.setOnClickListener(new View.OnClickListener() {
+        mLikeCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onClick(View view) {
-                if (mFollowRadioButton.isChecked()) {
-                    mFollowRadioButton.setChecked(false);
-                    // TODO database update
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!mLikeCheckBox.isChecked()) {
+                    songsApi.deleteFromLikes(userId, song.getId()).enqueue(new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+
+                        }
+                    });
                 } else {
-                    mFollowRadioButton.setChecked(true);
-                    // TODO database update
+                    songsApi.addToLikes(userId, song.getId()).enqueue(new Callback<Boolean>() {
+                        @Override
+                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<Boolean> call, Throwable t) {
+
+                        }
+                    });
                 }
             }
         });
@@ -104,7 +126,7 @@ public class SongDetails extends AppCompatActivity {
                 final PopupWindow choosePlaylistPopup = new PopupWindow(popupView,
                         LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
-                // TOT interrogate database for user's playlists
+                // TODO interrogate database for user's playlists
                 List<PlaylistDto> userPlaylists = new ArrayList<>();
 
                 ArrayAdapter adapter = new ChoosePlaylistPopUpAdapter(popupView, userPlaylists);

@@ -1,6 +1,8 @@
 package saci.android.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,14 +11,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import retrofit2.Callback;
+import retrofit2.Response;
 import saci.android.ChangeActivity;
 import saci.android.R;
+import saci.android.dtos.Oauth2Response;
+import saci.android.dtos.UserDto;
 import saci.android.register.RegisterAccountActivity;
 import saci.android.colors.ColorsActivity;
-import saci.android.register.RegisterAccountController;
 
 public class LoginActivity extends AppCompatActivity implements ChangeActivity {
 
@@ -27,10 +29,14 @@ public class LoginActivity extends AppCompatActivity implements ChangeActivity {
     private EditText mEmail;
     private EditText mPassword;
 
+    private SharedPreferences preferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        preferences = this.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
 
         loginButton = (Button) findViewById(R.id.create);
         mEmail = (EditText) findViewById(R.id.email);
@@ -57,29 +63,38 @@ public class LoginActivity extends AppCompatActivity implements ChangeActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                credentials();
-
-                if (loginController.verifyCredentials()) {
-                    Intent loginIntent = new Intent(LoginActivity.this, ColorsActivity.class);
-                    startActivity(loginIntent);
-                } else {
-                    Toast.makeText(LoginActivity.this, "Invalid user!", Toast.LENGTH_LONG).show();
-                }
+                setCredentials();
+                loginController.verifyCredentials(onLoginSuccess());
             }
         });
     }
 
-    private void credentials() {
-        JSONObject credentials = new JSONObject();
+    private void setCredentials() {
+        UserDto userDto = new UserDto();
 
-        try {
-            credentials.put("username", String.valueOf(mEmail.getText()));
-            credentials.put("password", String.valueOf(mPassword.getText()));
+        userDto.setUsername(String.valueOf(mEmail.getText()));
+        userDto.setPassword(String.valueOf(mPassword.getText()));
 
-            loginController = new LoginController(this, credentials);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        loginController = new LoginController(this, userDto);
+    }
 
+    private Callback<Oauth2Response> onLoginSuccess() {
+        return new Callback<Oauth2Response>() {
+            @Override
+            public void onResponse(retrofit2.Call<Oauth2Response> call, Response<Oauth2Response> response) {
+                if (response.body() != null) {
+                    Intent loginIntent = new Intent(LoginActivity.this, ColorsActivity.class);
+                    startActivity(loginIntent);
+
+                    preferences.edit().putString("accessToken", response.body().getAccessToken()).apply();
+                    preferences.edit().putString("refreshToken", response.body().getRefreshToken()).apply();
+                }
+            }
+
+            @Override
+            public void onFailure(retrofit2.Call<Oauth2Response> call, Throwable t) {
+                Toast.makeText(LoginActivity.this, "Invalid user!", Toast.LENGTH_LONG).show();
+            }
+        };
     }
 }

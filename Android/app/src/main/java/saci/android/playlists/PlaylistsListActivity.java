@@ -1,6 +1,7 @@
 package saci.android.playlists;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -12,8 +13,15 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
+import saci.android.network.PlaylistApi;
+import saci.android.network.SongsApi;
 import saci.android.playlists.adapter.PlaylistListAdapter;
 
 /**
@@ -28,14 +36,36 @@ public class PlaylistsListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlists_list);
 
+        playlistsList = new ArrayList<>();
+
         playlists();
-        createListAdapter();
     }
 
     private void playlists() {
         playlistsList = new ArrayList<>();
 
-        // TODO interrogate database
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(getResources().getString(R.string.base_link))
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+
+        SharedPreferences preferences = this.getApplicationContext().getSharedPreferences("saci.android", MODE_PRIVATE);
+        String userId = preferences.getString("userId", new String());
+
+        final PlaylistApi playlistApi = retrofit.create(PlaylistApi.class);
+        playlistApi.getPlaylists(userId).enqueue(new Callback<List<PlaylistDto>>() {
+            @Override
+            public void onResponse(Call<List<PlaylistDto>> call, Response<List<PlaylistDto>> response) {
+                playlistsList = response.body();
+
+                createListAdapter();
+            }
+
+            @Override
+            public void onFailure(Call<List<PlaylistDto>> call, Throwable t) {
+
+            }
+        });
 
     }
 

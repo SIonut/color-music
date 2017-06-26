@@ -11,18 +11,17 @@ import android.widget.EditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-
 import saci.android.ChangeActivity;
 import saci.android.R;
 import saci.android.colors.ColorsActivity;
+import saci.android.dtos.UserDto;
 
 /**
  * Created by Corina on 5/25/2017.
  */
 public class RegisterAccountActivity extends AppCompatActivity implements ChangeActivity {
 
-    private RegisterAccountController registerAccountController;
+    private RegisterController registerController;
 
     private EditText mEmail;
     private EditText mPassword;
@@ -47,27 +46,20 @@ public class RegisterAccountActivity extends AppCompatActivity implements Change
             public void onClick(View v) {
                 credentials();
 
-                if (registerAccountController.createAccount()) {
-                    Intent createAccountIntent = new Intent(RegisterAccountActivity.this, ColorsActivity.class);
-                    startActivity(createAccountIntent);
-                } else {
-
-                }
+                registerController.createAccount();
+                Intent createAccountIntent = new Intent(RegisterAccountActivity.this, ColorsActivity.class);
+                startActivity(createAccountIntent);
             }
         });
     }
 
     private void credentials() {
-        JSONObject credentials = new JSONObject();
+        UserDto userDto = new UserDto();
 
-        try {
-            credentials.put("username", String.valueOf(mEmail.getText()));
-            credentials.put("password", String.valueOf(mPassword.getText()));
+        userDto.setPassword(String.valueOf(mPassword.getText()));
+        userDto.setUsername(String.valueOf(mEmail.getText()));
 
-            registerAccountController = new RegisterAccountController(this, credentials);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        registerController = new RegisterController(this, userDto);
 
     }
 }

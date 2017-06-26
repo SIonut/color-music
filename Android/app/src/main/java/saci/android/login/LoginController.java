@@ -1,53 +1,56 @@
 package saci.android.login;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
-import saci.android.colors.ColorsActivity;
-import saci.android.network.NetworkFragment;
+import saci.android.dtos.Oauth2Response;
+import saci.android.dtos.UserDto;
+import saci.android.network.UserApi;
 
 /**
  * Created by Corina on 5/25/2017.
  */
-
 public class LoginController {
 
-    private NetworkFragment mNetworkFragment;
     private final Context mContext;
-    private final JSONObject mCredentials;
+    private final UserDto userDto;
 
-    public LoginController(Context context, JSONObject credentials) {
+    public LoginController(Context context, UserDto userDto) {
         this.mContext = context;
-        this.mCredentials = credentials;
-
+        this.userDto = userDto;
     }
 
-    public boolean verifyCredentials() {
+    public Oauth2Response verifyCredentials(Callback<Oauth2Response> callback) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(mContext.getResources().getString(R.string.base_link).split("api/")[0])
+                .addConverterFactory(JacksonConverterFactory.create())
+                .build();
+        UserApi userApi = retrofit.create(UserApi.class);
+        final Oauth2Response oauth2Response = new Oauth2Response();
+        userApi.login("password", userDto.getUsername(), userDto.getPassword()).enqueue(callback);
 
-        String registerLink = R.string.base_link + "api/users/register/" + mCredentials.toString();
-        mNetworkFragment = NetworkFragment.getInstance(registerLink, mContext, ColorsActivity.class);
-        mNetworkFragment.startDownload();
+        userApi.getUser(userDto).enqueue(new Callback<UserDto>() {
+            @Override
+            public void onResponse(Call<UserDto> call, Response<UserDto> response) {
+                SharedPreferences preferences = mContext.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
 
-        String link = R.string.base_link + "api/playlists/";
-        JSONObject likePlaylist = new JSONObject();
+                preferences.edit().putString("userId", response.body().getId()).apply();
+            }
 
-        try {
-            likePlaylist.put("userId", "");
-            likePlaylist.put("name", "Liked");
-            likePlaylist.put("songs", new JSONArray());
+            @Override
+            public void onFailure(Call<UserDto> call, Throwable t) {
 
-            String playlistLink = link + likePlaylist.toString();
-            mNetworkFragment.changeUrl(playlistLink);
-            mNetworkFragment.startDownload();
+            }
+        });
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return false;
+        return oauth2Response;
     }
 }

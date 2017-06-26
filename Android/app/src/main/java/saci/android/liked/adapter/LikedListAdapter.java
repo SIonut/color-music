@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class LikedListAdapter extends ArrayAdapter<SongDto> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
+
+        TextView title = (TextView) convertView.findViewById(R.id.song_title);
+        title.setText(item.getTitle());
+        TextView author = (TextView) convertView.findViewById(R.id.song_author);
+        author.setText(item.getTitle());
 
         return convertView;
     }
