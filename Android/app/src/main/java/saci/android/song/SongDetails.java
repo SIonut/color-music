@@ -18,19 +18,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Playlist;
-import saci.android.dtos.Song;
+import saci.android.dtos.PlaylistDto;
+import saci.android.dtos.SongDto;
+import saci.android.network.NetworkFragment;
 
 /**
  * Created by Corina on 5/27/2017.
  */
 public class SongDetails extends AppCompatActivity {
 
-    private Song song;
+    private SongDto song;
 
-    private RadioButton likeRadioButton;
-    private RadioButton followRadioButton;
-    private Button addToPlaylistButton;
+    private NetworkFragment mNetworkFragment;
+
+    private RadioButton mLikeRadioButton;
+    private RadioButton mFollowRadioButton;
+    private Button mAddToPlaylistButton;
     private WebView mWebView;
 
     @Override
@@ -38,13 +41,83 @@ public class SongDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_detailed);
 
-        likeRadioButton = (RadioButton) findViewById(R.id.like_radio);
-        followRadioButton = (RadioButton) findViewById(R.id.follow_radio);
-        addToPlaylistButton = (Button) findViewById(R.id.add_to_palylist);
+        likeSongRadioButton();
+        followPlaylistRadioButton();
+        addToPlaylistButton();
+        songWebFrame();
 
-        initializeRadioButtons();
+        mNetworkFragment = NetworkFragment.getInstance(R.string.base_link + "api/", this, null);
 
-        song = (Song) getIntent().getSerializableExtra("song");
+    }
+
+    private void likeSongRadioButton() {
+        mLikeRadioButton = (RadioButton) findViewById(R.id.like_radio);
+
+        // TODO interrogate database
+        String likePlaylistLink = R.string.base_link + "api/playlists/";
+
+        mNetworkFragment.changeUrl(likePlaylistLink);
+        mNetworkFragment.startDownload();
+
+        mLikeRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mLikeRadioButton.isChecked()) {
+                    mLikeRadioButton.setChecked(false);
+                    // TODO database update
+                } else {
+                    mLikeRadioButton.setChecked(true);
+                    // TODO database update
+                }
+            }
+        });
+    }
+
+    private void followPlaylistRadioButton() {
+        mFollowRadioButton = (RadioButton) findViewById(R.id.follow_radio);
+
+        // TODO interrogate database
+
+        mFollowRadioButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mFollowRadioButton.isChecked()) {
+                    mFollowRadioButton.setChecked(false);
+                    // TODO database update
+                } else {
+                    mFollowRadioButton.setChecked(true);
+                    // TODO database update
+                }
+            }
+        });
+    }
+
+    private void addToPlaylistButton() {
+        mAddToPlaylistButton = (Button) findViewById(R.id.add_to_palylist);
+
+        mAddToPlaylistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater popupLayoutInflater = (LayoutInflater) getBaseContext()
+                        .getSystemService(LAYOUT_INFLATER_SERVICE);
+                View popupView = popupLayoutInflater.inflate(R.layout.choose_playlist_popup, null);
+                final PopupWindow choosePlaylistPopup = new PopupWindow(popupView,
+                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+
+                // TOT interrogate database for user's playlists
+                List<PlaylistDto> userPlaylists = new ArrayList<>();
+
+                ArrayAdapter adapter = new ChoosePlaylistPopUpAdapter(popupView, userPlaylists);
+                ListView playlistsList = (ListView) popupView.findViewById(R.id.popup_playlists);
+                playlistsList.setAdapter(adapter);
+
+                choosePlaylistPopup.showAsDropDown(mWebView);
+            }
+        });
+    }
+
+    private void songWebFrame() {
+        song = (SongDto) getIntent().getSerializableExtra("song");
         // TODO interrogate database
 
         String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420px\" height=\"315px\" " +
@@ -56,55 +129,5 @@ public class SongDetails extends AppCompatActivity {
         mWebView.loadData(frameVideo, "text/html", "utf-8");
         mWebView.setWebChromeClient(new WebChromeClient());
 
-    }
-
-    private void initializeRadioButtons() {
-        // TODO interrogate database
-
-        likeRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (likeRadioButton.isChecked()) {
-                    likeRadioButton.setChecked(false);
-                    // TODO database update
-                } else {
-                    likeRadioButton.setChecked(true);
-                    // TODO database update
-                }
-            }
-        });
-
-        followRadioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (followRadioButton.isChecked()) {
-                    followRadioButton.setChecked(false);
-                    // TODO database update
-                } else {
-                    followRadioButton.setChecked(true);
-                    // TODO database update
-                }
-            }
-        });
-
-        addToPlaylistButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LayoutInflater popupLayoutInflater = (LayoutInflater) getBaseContext()
-                        .getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = popupLayoutInflater.inflate(R.layout.choose_playlist_popup, null);
-                final PopupWindow choosePlaylistPopup = new PopupWindow(popupView,
-                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-                // TOT interrogate database for user's playlists
-                List<Playlist> userPlaylists = new ArrayList<>();
-
-                ArrayAdapter adapter = new ChoosePlaylistPopUpAdapter(popupView, userPlaylists);
-                ListView playlistsList = (ListView) popupView.findViewById(R.id.popup_playlists);
-                playlistsList.setAdapter(adapter);
-
-                choosePlaylistPopup.showAsDropDown(mWebView);
-            }
-        });
     }
 }

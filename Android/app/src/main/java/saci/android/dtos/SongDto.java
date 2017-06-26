@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Corina on 5/20/2017.
  */
-public class Song implements Serializable{
+public class SongDto implements Serializable{
 
     private String id;
     private String link;

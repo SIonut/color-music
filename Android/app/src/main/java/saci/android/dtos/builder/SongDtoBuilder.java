@@ -1,18 +1,15 @@
 package saci.android.dtos.builder;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.List;
 
-import saci.android.dtos.Song;
+import saci.android.dtos.SongDto;
 
 /**
  * Created by corina on 22.06.2017.
  */
-public class SongBuilder {
+public class SongDtoBuilder {
 
-    private Song song;
+    private SongDto song;
 
     private String id;
     private String link;
@@ -20,38 +17,38 @@ public class SongBuilder {
     private String author;
     private List<String> colors;
 
-    public SongBuilder() {
-        song = new Song();
+    public SongDtoBuilder() {
+        song = new SongDto();
     }
 
-    public SongBuilder setId(String id) {
+    public SongDtoBuilder setId(String id) {
         song.setId(id);
         return this;
     }
 
-    public SongBuilder setLink(String link) {
+    public SongDtoBuilder setLink(String link) {
         song.setLink(link);
         return this;
     }
 
-    public SongBuilder setTitle(String title) {
+    public SongDtoBuilder setTitle(String title) {
         song.setTitle(title);
         return this;
     }
 
-    public SongBuilder setAuthor(String author) {
+    public SongDtoBuilder setAuthor(String author) {
         song.setAuthor(author);
         return this;
     }
 
-    public SongBuilder setColor(List<String> colors) {
+    public SongDtoBuilder setColor(List<String> colors) {
 //        JSONArray colorsList = colors.getJSONArray();
 //        for
 //        song.setColor(color);
         return this;
     }
 
-    public Song build() {
+    public SongDto build() {
         return song;
     }
 }

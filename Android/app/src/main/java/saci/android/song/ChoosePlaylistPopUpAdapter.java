@@ -10,14 +10,14 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Playlist;
+import saci.android.dtos.PlaylistDto;
 
 /**
  * Created by corina on 22.06.2017.
  */
-public class ChoosePlaylistPopUpAdapter extends ArrayAdapter<Playlist> {
+public class ChoosePlaylistPopUpAdapter extends ArrayAdapter<PlaylistDto> {
 
-    public ChoosePlaylistPopUpAdapter(View view, List<Playlist> resource) {
+    public ChoosePlaylistPopUpAdapter(View view, List<PlaylistDto> resource) {
         super(view.getContext(), 0, resource);
     }
 
@@ -25,7 +25,7 @@ public class ChoosePlaylistPopUpAdapter extends ArrayAdapter<Playlist> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        Playlist item = getItem(position);
+        PlaylistDto item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);

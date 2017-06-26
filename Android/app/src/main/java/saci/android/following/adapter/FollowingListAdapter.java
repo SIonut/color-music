@@ -10,22 +10,22 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Playlist;
+import saci.android.dtos.PlaylistDto;
 import saci.android.following.FollowingListActivity;
 
 /**
  * Created by corina on 21.06.2017.
  */
-public class FollowingListAdapter extends ArrayAdapter<Playlist> {
+public class FollowingListAdapter extends ArrayAdapter<PlaylistDto> {
 
-    public FollowingListAdapter(FollowingListActivity context, List<Playlist> followedPlaylists) {
+    public FollowingListAdapter(FollowingListActivity context, List<PlaylistDto> followedPlaylists) {
         super(context, 0, followedPlaylists);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Playlist item = getItem(position);
+        PlaylistDto item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);

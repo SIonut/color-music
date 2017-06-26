@@ -18,10 +18,12 @@ import saci.android.music.ColorMusicResultActivity;
  */
 public class DownloadTask extends AsyncTask<String, Void, String> {
 
-    private final Context context;
+    private final Context mContext;
+    private final Class mClass;
 
-    public DownloadTask(Context context) {
-        this.context = context;
+    public DownloadTask(Context context, Class intentClass) {
+        this.mContext = context;
+        this.mClass = intentClass;
     }
 
     /**
@@ -36,7 +38,8 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
      */
     @Override
     protected String doInBackground(String... urls) {
-        String result = "";
+        String result = null;
+
         if (!isCancelled() && urls != null && urls.length > 0) {
             String urlString = urls[0];
             try {
@@ -59,10 +62,10 @@ public class DownloadTask extends AsyncTask<String, Void, String> {
      */
     @Override
     protected void onPostExecute(String result) {
-        if (result != "") {
-            Intent findIntent = new Intent(context, ColorMusicResultActivity.class);
+        if (result != null && mClass != null) {
+            Intent findIntent = new Intent(mContext, mClass);
             findIntent.putExtra("songs", result);
-            context.startActivity(findIntent);
+            mContext.startActivity(findIntent);
         }
     }
 

@@ -11,15 +11,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import saci.android.R;
-import saci.android.dtos.Song;
+import saci.android.dtos.SongDto;
 import saci.android.music.ColorMusicResultActivity;
 
 /**
  * Created by Corina on 5/26/2017.
  */
-public class SearchResultListAdapter extends ArrayAdapter<Song> {
+public class SearchResultListAdapter extends ArrayAdapter<SongDto> {
 
-    public SearchResultListAdapter(ColorMusicResultActivity colorMusicResultActivity, ArrayList<Song> songsList) {
+    public SearchResultListAdapter(ColorMusicResultActivity colorMusicResultActivity, ArrayList<SongDto> songsList) {
         super(colorMusicResultActivity, 0, songsList);
     }
 
@@ -27,7 +27,7 @@ public class SearchResultListAdapter extends ArrayAdapter<Song> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        Song item = getItem(position);
+        SongDto item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);

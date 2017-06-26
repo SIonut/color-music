@@ -6,12 +6,12 @@ import java.util.List;
 /**
  * Created by Corina on 5/20/2017.
  */
-public class Playlist implements Serializable{
+public class PlaylistDto implements Serializable {
 
     private String id;
     private String userId;
     private String name;
-    private List<Song> songs;
+    private List<SongDto> songs;
 
     public String getId() {
         return id;
@@ -37,11 +37,11 @@ public class Playlist implements Serializable{
         this.name = name;
     }
 
-    public List<Song> getSongs() {
+    public List<SongDto> getSongs() {
         return songs;
     }
 
-    public void setSongs(List<Song> songs) {
+    public void setSongs(List<SongDto> songs) {
         this.songs = songs;
     }
 }
