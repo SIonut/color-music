@@ -77,7 +77,9 @@ public class SongService {
                 webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.MILLISECONDS);
                 String artist = webDriver.findElement(By.className("title_artist")).findElement(By.className("a")).getText();
                 webDriver.manage().timeouts().implicitlyWait(50, TimeUnit.MILLISECONDS);
-                songs.add(getBuiltSong(youtubeLink, title, artist, colors));
+                if (!title.equals("")) {
+                    songs.add(getBuiltSong(youtubeLink, title, artist, colors));
+                }
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());

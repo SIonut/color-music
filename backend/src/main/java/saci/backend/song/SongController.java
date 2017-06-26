@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import saci.backend.playlist.PlaylistDto;
 
 import java.util.List;
 
@@ -24,7 +25,16 @@ public class SongController {
     }
 
     @RequestMapping(value = "/{colors}")
-    public ResponseEntity<List<SongDto>> testSearchByColors(@PathVariable List<String> colors) {
-        return new ResponseEntity<>(songService.findInDb(colors), HttpStatus.OK);
+    public ResponseEntity<List<SongDto>> searchByColors(@PathVariable List<String> colors) {
+        return new ResponseEntity<>(songService.findByColors(colors), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/id/{id}")
+    public ResponseEntity<SongDto> searchById(@PathVariable String id) {
+        SongDto songDto = songService.findById(id);
+        if (songDto == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(songDto, HttpStatus.OK);
     }
 }

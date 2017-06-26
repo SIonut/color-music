@@ -30,7 +30,7 @@ public class SongService {
         this.eightTracksService = eightTracksService;
     }
 
-    public List<SongDto> findOnline(List<String> colors) {
+    public List<SongDto> findByColorsOnline(List<String> colors) {
         List<String> moods = colors.stream()
                 .map(moodService::findByColor)
                 .filter(Objects::nonNull)
@@ -47,10 +47,15 @@ public class SongService {
                 .collect(Collectors.toList());
     }
 
-    public List<SongDto> findInDb(List<String> colors) {
+    public List<SongDto> findByColors(List<String> colors) {
         ModelMapper modelMapper = new ModelMapper();
         return songRepository.findByColor(colors).stream()
                 .map(it -> modelMapper.map(it, SongDto.class))
                 .collect(Collectors.toList());
+    }
+
+    public SongDto findById(String id) {
+        Song song = songRepository.findOne(id);
+        return song != null ? new ModelMapper().map(song, SongDto.class) : null;
     }
 }
