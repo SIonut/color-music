@@ -10,22 +10,13 @@
         android:layout_height="200dp"
         android:layout_weight="0.09" />
 
-    <RadioButton
+    <CheckBox
         android:id="@+id/like_radio"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:text="like"
         android:layout_below="@+id/videoView"
-        android:layout_alignEnd="@+id/follow_radio"
         android:layout_marginTop="23dp" />
-
-    <RadioButton
-        android:id="@+id/follow_radio"
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:text="follow"
-        android:layout_below="@+id/like_radio"
-        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/add_to_palylist"
@@ -34,7 +25,7 @@
         android:layout_marginStart="96dp"
         android:layout_marginTop="43dp"
         android:text="add to playlist"
-        android:layout_below="@+id/follow_radio"
-        android:layout_alignStart="@+id/follow_radio" />
+        android:layout_below="@+id/like_radio"
+        android:layout_alignStart="@+id/like_radio" />
 
 </RelativeLayout>

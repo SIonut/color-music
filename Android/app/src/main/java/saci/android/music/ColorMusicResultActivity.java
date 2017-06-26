@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,10 +17,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.colors.ColorsActivity;
 import saci.android.dtos.SongDto;
+import saci.android.login.LoginActivity;
 import saci.android.music.adapter.SearchResultListAdapter;
+import saci.android.network.SongsApi;
 import saci.android.song.SongDetails;
 
 /**
@@ -27,7 +35,6 @@ import saci.android.song.SongDetails;
  */
 public class ColorMusicResultActivity extends AppCompatActivity {
 
-    private String songsResponse;
     private ArrayList<SongDto> songsList;
 
     @Override
@@ -35,15 +42,8 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_list);
 
-        songsList = new ArrayList<>();
-        songsResponse = getIntent().getStringExtra("songs");
-
-        try {
-            songsList = new ObjectMapper().readValue(songsResponse, new TypeReference<List<SongDto>>(){});
-            createListAdapter();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        songsList = (ArrayList<SongDto>) getIntent().getSerializableExtra("songs");
+        createListAdapter();
 
     }
 
@@ -64,9 +64,31 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent detailsIntent = new Intent(ColorMusicResultActivity.this, SongDetails.class);
-                detailsIntent.putExtra("song", songsList.get(position));
-                startActivity(detailsIntent);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(getResources().getString(R.string.base_link))
+                        .addConverterFactory(JacksonConverterFactory.create())
+                        .build();
+
+                SongsApi songsApi = retrofit.create(SongsApi.class);
+                songsApi.getById(songsList.get(position).getId()).enqueue(new Callback<SongDto>() {
+                    @Override
+                    public void onResponse(Call<SongDto> call, Response<SongDto> response) {
+                        if (response.code() == 200) {
+                            Intent detailsIntent = new Intent(ColorMusicResultActivity.this, SongDetails.class);
+                            SongDto songDto = response.body();
+                            detailsIntent.putExtra("song", response.body());
+                            startActivity(detailsIntent);
+                        } else {
+                            Toast.makeText(ColorMusicResultActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<SongDto> call, Throwable t) {
+                        Toast.makeText(ColorMusicResultActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
+                    }
+                });
+
             }
         });
 

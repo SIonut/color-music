@@ -12,12 +12,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.ChangeActivity;
 import saci.android.R;
+import saci.android.dtos.SongDto;
 import saci.android.following.FollowingListActivity;
 import saci.android.liked.LikedListActivity;
 import saci.android.music.ColorMusicResultActivity;
-import saci.android.network.NetworkFragment;
+import saci.android.network.SongsApi;
 import saci.android.playlists.PlaylistsListActivity;
 
 /**
@@ -26,7 +32,7 @@ import saci.android.playlists.PlaylistsListActivity;
 public class ColorsActivity extends AppCompatActivity implements ChangeActivity {
 
     private TextView drawerPlaylists;
-    private TextView drawerFollowing;
+//    private TextView drawerFollowing;
     private TextView drawerLiked;
 
     private TextView selectedMoodsView;
@@ -36,9 +42,6 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
 
     private ArrayList<String> selectedMoods = new ArrayList<>();
 
-    // new fragment for AsyncTask downloading - invisible fragment
-    private NetworkFragment mNetworkFragment;
-    private boolean mDownloading = false;
     private Context context;
 
     @Override
@@ -50,7 +53,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         selectedButtons = new ArrayList<>();
 
         drawerPlaylists = (TextView) findViewById(R.id.playlist_navigator);
-        drawerFollowing = (TextView) findViewById(R.id.following_navigator);
+//        drawerFollowing = (TextView) findViewById(R.id.following_navigator);
         drawerLiked = (TextView) findViewById(R.id.liked_navigator);
 
         selectedMoodsView = (TextView) findViewById(R.id.selected_moods);
@@ -114,37 +117,47 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = R.string.base_link + "api/songs/";
+
+                String colors = "";
 
                 for (int i=0; i < selectedMoods.size()-1; i++) {
-                    link += selectedMoods.get(i) + ",";
+                    colors += selectedMoods.get(i) + ",";
                 }
+                colors += selectedMoods.get(selectedMoods.size()-1);
 
-                link += selectedMoods.get(selectedMoods.size()-1);
+                Retrofit retrofit = new Retrofit.Builder()
+                        .baseUrl(getResources().getString(R.string.base_link))
+                        .addConverterFactory(JacksonConverterFactory.create())
+                        .build();
 
-                mNetworkFragment = NetworkFragment.getInstance(link, context, ColorMusicResultActivity.class);
-                startDownload();
-                finish();
+                SongsApi songsApi = retrofit.create(SongsApi.class);
+                songsApi.getByColor(colors).enqueue(new Callback<List<SongDto>>() {
+                    @Override
+                    public void onResponse(Call<List<SongDto>> call, Response<List<SongDto>> response) {
+                        Intent findIntent = new Intent(context, ColorMusicResultActivity.class);
+                        ArrayList<SongDto> resp = (ArrayList<SongDto>) response.body();
+                        findIntent.putExtra("songs", resp);
+                        startActivity(findIntent);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<SongDto>> call, Throwable t) {
+
+                    }
+                });
+
             }
         });
-    }
-
-    private void startDownload() {
-        if (!mDownloading && mNetworkFragment != null) {
-            // Execute the async download.
-            mNetworkFragment.startDownload();
-            mDownloading = true;
-        }
     }
 
     private void drawer() {
-        drawerFollowing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent followIntent = new Intent(ColorsActivity.this, FollowingListActivity.class);
-                startActivity(followIntent);
-            }
-        });
+//        drawerFollowing.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent followIntent = new Intent(ColorsActivity.this, FollowingListActivity.class);
+//                startActivity(followIntent);
+//            }
+//        });
         drawerPlaylists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
