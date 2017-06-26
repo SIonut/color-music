@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Playlist;
+import saci.android.dtos.PlaylistDto;
 import saci.android.following.adapter.FollowingListAdapter;
 
 /**
@@ -18,7 +18,7 @@ import saci.android.following.adapter.FollowingListAdapter;
  */
 public class FollowingListActivity extends AppCompatActivity {
 
-    private List<Playlist> followedPlaylists;
+    private List<PlaylistDto> followedPlaylists;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

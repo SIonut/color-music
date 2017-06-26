@@ -10,15 +10,15 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Playlist;
+import saci.android.dtos.PlaylistDto;
 import saci.android.playlists.PlaylistsListActivity;
 
 /**
  * Created by corina on 21.06.2017.
  */
-public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
+public class PlaylistListAdapter extends ArrayAdapter<PlaylistDto> {
 
-    public PlaylistListAdapter(PlaylistsListActivity playlistsListActivity, List<Playlist> playlistsList) {
+    public PlaylistListAdapter(PlaylistsListActivity playlistsListActivity, List<PlaylistDto> playlistsList) {
         super(playlistsListActivity, 0, playlistsList);
     }
 
@@ -26,7 +26,7 @@ public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        Playlist item = getItem(position);
+        PlaylistDto item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);

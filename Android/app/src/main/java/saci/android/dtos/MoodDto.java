@@ -3,15 +3,15 @@ package saci.android.dtos;
 /**
  * Created by Corina on 5/20/2017.
  */
-public class Mood {
+public class MoodDto {
 
     private String color;
     private String mood;
 
-    public Mood() {
+    public MoodDto() {
     }
 
-    public Mood(String color, String mood) {
+    public MoodDto(String color, String mood) {
         this.color = color;
         this.mood = mood;
     }

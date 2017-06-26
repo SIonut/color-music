@@ -12,18 +12,13 @@ import android.widget.ListView;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import saci.android.R;
 import saci.android.colors.ColorsActivity;
-import saci.android.dtos.Song;
-import saci.android.dtos.builder.SongBuilder;
+import saci.android.dtos.SongDto;
 import saci.android.music.adapter.SearchResultListAdapter;
 import saci.android.song.SongDetails;
 
@@ -33,7 +28,7 @@ import saci.android.song.SongDetails;
 public class ColorMusicResultActivity extends AppCompatActivity {
 
     private String songsResponse;
-    private ArrayList<Song> songsList;
+    private ArrayList<SongDto> songsList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +39,7 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         songsResponse = getIntent().getStringExtra("songs");
 
         try {
-            songsList = new ObjectMapper().readValue(songsResponse, new TypeReference<List<Song>>(){});
+            songsList = new ObjectMapper().readValue(songsResponse, new TypeReference<List<SongDto>>(){});
             createListAdapter();
         } catch (IOException e) {
             e.printStackTrace();

@@ -10,22 +10,22 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Song;
+import saci.android.dtos.SongDto;
 import saci.android.liked.LikedListActivity;
 
 /**
  * Created by corina on 21.06.2017.
  */
-public class LikedListAdapter extends ArrayAdapter<Song> {
+public class LikedListAdapter extends ArrayAdapter<SongDto> {
 
-    public LikedListAdapter(LikedListActivity likedListActivity, List<Song> likedList) {
+    public LikedListAdapter(LikedListActivity likedListActivity, List<SongDto> likedList) {
         super(likedListActivity, 0, likedList);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        Song item = getItem(position);
+        SongDto item = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);

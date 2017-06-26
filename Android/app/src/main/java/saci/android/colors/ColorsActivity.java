@@ -16,6 +16,7 @@ import saci.android.ChangeActivity;
 import saci.android.R;
 import saci.android.following.FollowingListActivity;
 import saci.android.liked.LikedListActivity;
+import saci.android.music.ColorMusicResultActivity;
 import saci.android.network.NetworkFragment;
 import saci.android.playlists.PlaylistsListActivity;
 
@@ -113,7 +114,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link = "http://172.24.30.49:8080/api/songs/";
+                String link = R.string.base_link + "api/songs/";
 
                 for (int i=0; i < selectedMoods.size()-1; i++) {
                     link += selectedMoods.get(i) + ",";
@@ -121,7 +122,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
 
                 link += selectedMoods.get(selectedMoods.size()-1);
 
-                mNetworkFragment = NetworkFragment.getInstance(link, context);
+                mNetworkFragment = NetworkFragment.getInstance(link, context, ColorMusicResultActivity.class);
                 startDownload();
                 finish();
             }

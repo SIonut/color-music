@@ -1,9 +1,7 @@
 package saci.android.liked;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.constraint.solver.ArrayLinkedVariables;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -12,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Song;
+import saci.android.dtos.SongDto;
 import saci.android.liked.adapter.LikedListAdapter;
 
 /**
@@ -20,7 +18,7 @@ import saci.android.liked.adapter.LikedListAdapter;
  */
 public class LikedListActivity extends AppCompatActivity {
 
-    private List<Song> likedList;
+    private List<SongDto> likedList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

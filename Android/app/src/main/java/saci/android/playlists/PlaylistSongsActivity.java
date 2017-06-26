@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import saci.android.R;
-import saci.android.dtos.Song;
+import saci.android.dtos.SongDto;
 import saci.android.playlists.adapter.PlaylistsSongsAdapter;
 import saci.android.song.SongDetails;
 
@@ -22,7 +22,7 @@ import saci.android.song.SongDetails;
  */
 public class PlaylistSongsActivity extends AppCompatActivity {
 
-    private List<Song> playlistSongList;
+    private List<SongDto> playlistSongList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
