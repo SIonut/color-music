@@ -42,11 +42,6 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".following.FollowingListActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".playlists.PlaylistsListActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
@@ -54,6 +49,10 @@
         <activity
             android:name=".liked.LikedListActivity"
             android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".playlists.NewPlaylist"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>

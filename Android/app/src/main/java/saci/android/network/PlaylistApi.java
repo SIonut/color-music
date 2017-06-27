@@ -17,4 +17,6 @@ public interface PlaylistApi {
 
     @GET("api/playlists/{userId}/playlists")
     Call<List<PlaylistDto>> getPlaylists(@Path("userId") String userId);
+
+
 }

@@ -15,14 +15,12 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.ChangeActivity;
 import saci.android.R;
 import saci.android.dtos.SongDto;
-import saci.android.following.FollowingListActivity;
 import saci.android.liked.LikedListActivity;
 import saci.android.music.ColorMusicResultActivity;
+import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
 import saci.android.playlists.PlaylistsListActivity;
 
@@ -32,7 +30,6 @@ import saci.android.playlists.PlaylistsListActivity;
 public class ColorsActivity extends AppCompatActivity implements ChangeActivity {
 
     private TextView drawerPlaylists;
-//    private TextView drawerFollowing;
     private TextView drawerLiked;
 
     private TextView selectedMoodsView;
@@ -125,12 +122,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
                 }
                 colors += selectedMoods.get(selectedMoods.size()-1);
 
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(getResources().getString(R.string.base_link))
-                        .addConverterFactory(JacksonConverterFactory.create())
-                        .build();
-
-                SongsApi songsApi = retrofit.create(SongsApi.class);
+                SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
                 songsApi.getByColor(colors).enqueue(new Callback<List<SongDto>>() {
                     @Override
                     public void onResponse(Call<List<SongDto>> call, Response<List<SongDto>> response) {
@@ -151,13 +143,6 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
     }
 
     private void drawer() {
-//        drawerFollowing.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent followIntent = new Intent(ColorsActivity.this, FollowingListActivity.class);
-//                startActivity(followIntent);
-//            }
-//        });
         drawerPlaylists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
