@@ -1,7 +1,6 @@
 package saci.android.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * Created by corina on 26.06.2017.

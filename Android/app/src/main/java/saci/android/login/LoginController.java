@@ -13,6 +13,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.Oauth2Response;
 import saci.android.dtos.UserDto;
+import saci.android.network.RestClient;
 import saci.android.network.UserApi;
 
 /**
@@ -29,11 +30,7 @@ public class LoginController {
     }
 
     public Oauth2Response verifyCredentials(Callback<Oauth2Response> callback) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(mContext.getResources().getString(R.string.base_link).split("api/")[0])
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-        UserApi userApi = retrofit.create(UserApi.class);
+        UserApi userApi = RestClient.getClient().create(UserApi.class);
         final Oauth2Response oauth2Response = new Oauth2Response();
         userApi.login("password", userDto.getUsername(), userDto.getPassword()).enqueue(callback);
 

@@ -71,7 +71,6 @@ public class ColorMusicResultActivity extends AppCompatActivity {
                     public void onResponse(Call<SongDto> call, Response<SongDto> response) {
                         if (response.code() == 200) {
                             Intent detailsIntent = new Intent(ColorMusicResultActivity.this, SongDetails.class);
-                            SongDto songDto = response.body();
                             detailsIntent.putExtra("song", response.body());
                             startActivity(detailsIntent);
                         } else {

@@ -68,7 +68,7 @@ public class PlaylistsListActivity extends AppCompatActivity {
     private void createListAdapter() {
         ArrayAdapter adapter = new PlaylistListAdapter(this, playlistsList);
 
-        ListView listView = (ListView) findViewById(R.id.y);
+        ListView listView = (ListView) findViewById(R.id.playlists);
         listView.setAdapter(adapter);
 
         if (addToPlaylist) {
