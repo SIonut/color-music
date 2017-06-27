@@ -21,6 +21,7 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
 import saci.android.network.PlaylistApi;
+import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
 import saci.android.playlists.adapter.PlaylistListAdapter;
 
@@ -30,6 +31,7 @@ import saci.android.playlists.adapter.PlaylistListAdapter;
 public class PlaylistsListActivity extends AppCompatActivity {
 
     private List<PlaylistDto> playlistsList;
+    private Boolean addToPlaylist;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,22 +39,16 @@ public class PlaylistsListActivity extends AppCompatActivity {
         setContentView(R.layout.playlists_list);
 
         playlistsList = new ArrayList<>();
+        addToPlaylist = getIntent().hasExtra("addToLiked") ? true : false;
 
         playlists();
     }
 
     private void playlists() {
-        playlistsList = new ArrayList<>();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.base_link))
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-
         SharedPreferences preferences = this.getApplicationContext().getSharedPreferences("saci.android", MODE_PRIVATE);
         String userId = preferences.getString("userId", new String());
 
-        final PlaylistApi playlistApi = retrofit.create(PlaylistApi.class);
+        final PlaylistApi playlistApi = RestClient.getClient().create(PlaylistApi.class);
         playlistApi.getPlaylists(userId).enqueue(new Callback<List<PlaylistDto>>() {
             @Override
             public void onResponse(Call<List<PlaylistDto>> call, Response<List<PlaylistDto>> response) {
@@ -75,15 +71,26 @@ public class PlaylistsListActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.y);
         listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent playlistSongsIntent = new Intent(PlaylistsListActivity.this, PlaylistSongsActivity.class);
-                playlistSongsIntent.putExtra("playlist", playlistsList.get(position));
-                startActivity(playlistSongsIntent);
-            }
-        });
+        if (addToPlaylist) {
+            listView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PlaylistApi playlistApi = RestClient.getClient().create(PlaylistApi.class);
 
+                    // TODO database interrogation
+                    finish();
+                }
+            });
+        } else {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent playlistSongsIntent = new Intent(PlaylistsListActivity.this, PlaylistSongsActivity.class);
+                    playlistSongsIntent.putExtra("playlist", playlistsList.get(position));
+                    startActivity(playlistSongsIntent);
+                }
+            });
+        }
     }
 
 }

@@ -27,6 +27,7 @@ import saci.android.colors.ColorsActivity;
 import saci.android.dtos.SongDto;
 import saci.android.login.LoginActivity;
 import saci.android.music.adapter.SearchResultListAdapter;
+import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
 import saci.android.song.SongDetails;
 
@@ -64,12 +65,7 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(getResources().getString(R.string.base_link))
-                        .addConverterFactory(JacksonConverterFactory.create())
-                        .build();
-
-                SongsApi songsApi = retrofit.create(SongsApi.class);
+                SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
                 songsApi.getById(songsList.get(position).getId()).enqueue(new Callback<SongDto>() {
                     @Override
                     public void onResponse(Call<SongDto> call, Response<SongDto> response) {

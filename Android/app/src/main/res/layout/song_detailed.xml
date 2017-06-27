@@ -28,4 +28,13 @@
         android:layout_below="@+id/like_radio"
         android:layout_alignStart="@+id/like_radio" />
 
+    <Button
+        android:id="@+id/create_new_playlist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="create playlist"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/add_to_palylist"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

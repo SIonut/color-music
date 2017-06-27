@@ -1,33 +1,27 @@
 package saci.android.song;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.view.ViewGroup.LayoutParams;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import saci.android.R;
-import saci.android.dtos.PlaylistDto;
 import saci.android.dtos.SongDto;
 import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
+import saci.android.playlists.NewPlaylist;
+import saci.android.playlists.PlaylistsListActivity;
 
 /**
  * Created by Corina on 5/27/2017.
@@ -38,6 +32,7 @@ public class SongDetails extends AppCompatActivity {
 
     private CheckBox mLikeCheckBox;
     private Button mAddToPlaylistButton;
+    private Button mNewPlaylistButton;
     private WebView mWebView;
 
     private SongsApi songsApi;
@@ -57,6 +52,7 @@ public class SongDetails extends AppCompatActivity {
 
         likeSongRadioButton();
         addToPlaylistButton();
+        createNewPlaylistButton();
         songWebFrame();
 
     }
@@ -114,27 +110,27 @@ public class SongDetails extends AppCompatActivity {
         mAddToPlaylistButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater popupLayoutInflater = (LayoutInflater) getBaseContext()
-                        .getSystemService(LAYOUT_INFLATER_SERVICE);
-                View popupView = popupLayoutInflater.inflate(R.layout.choose_playlist_popup, null);
-                final PopupWindow choosePlaylistPopup = new PopupWindow(popupView,
-                        LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                Intent playlistIntent = new Intent(SongDetails.this, PlaylistsListActivity.class);
+                playlistIntent.putExtra("addToLike", true);
+                startActivity(playlistIntent);
+            }
+        });
+    }
 
-                // TODO interrogate database for user's playlists
-                List<PlaylistDto> userPlaylists = new ArrayList<>();
+    private void createNewPlaylistButton() {
+        mNewPlaylistButton = (Button) findViewById(R.id.create_new_playlist);
 
-                ArrayAdapter adapter = new ChoosePlaylistPopUpAdapter(popupView, userPlaylists);
-                ListView playlistsList = (ListView) popupView.findViewById(R.id.popup_playlists);
-                playlistsList.setAdapter(adapter);
-
-                choosePlaylistPopup.showAsDropDown(mWebView);
+        mNewPlaylistButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newPlaylistIntent = new Intent(SongDetails.this, NewPlaylist.class);
+                startActivity(newPlaylistIntent);
             }
         });
     }
 
     private void songWebFrame() {
         song = (SongDto) getIntent().getSerializableExtra("song");
-        // TODO interrogate database
 
         String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420px\" height=\"315px\" " +
                 "src=\" " + song.getLink() + "?autoplay=1&vq=small\" " +
