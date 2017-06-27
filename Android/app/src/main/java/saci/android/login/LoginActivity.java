@@ -89,6 +89,7 @@ public class LoginActivity extends AppCompatActivity implements ChangeActivity {
 
                     preferences.edit().putString(CustomPreferences.ACCESS_TOKEN, response.body().getAccessToken()).apply();
                     preferences.edit().putString(CustomPreferences.REFRESH_TOKEN, response.body().getRefreshToken()).apply();
+                    loginController.fetchUser();
                 }
             }
 
