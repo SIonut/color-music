@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -34,11 +35,8 @@ public class PlaylistsSongsAdapter extends ArrayAdapter<SongDto> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item, parent, false);
         }
 
-//        TextView songTitle = (TextView) convertView.findViewById(R.id.song_title);
-//        TextView songAuthor = (TextView) convertView.findViewById(R.id.song_author);
-//
-//        songTitle.setText(item.getTitle());
-//        songAuthor.setText(item.getAuthor());
+        TextView songTitle = (TextView) convertView.findViewById(R.id.song_title);
+        songTitle.setText(item.getTitle());
 
         return convertView;
     }

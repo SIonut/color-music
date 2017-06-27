@@ -22,6 +22,7 @@ public class ColorMusicApplication extends Application {
     }
 
     public static SharedPreferences getSharedPreferences() {
+        ColorMusicApplication.getAppContext().getSharedPreferences("saci.android", MODE_PRIVATE);
         return ColorMusicApplication.context.getSharedPreferences("saci.android", MODE_PRIVATE);
     }
 }

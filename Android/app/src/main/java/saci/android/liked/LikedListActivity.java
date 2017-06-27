@@ -18,6 +18,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import saci.android.ColorMusicApplication;
+import saci.android.CustomPreferences;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
 import saci.android.dtos.SongDto;
@@ -41,9 +43,8 @@ public class LikedListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_list);
 
-        preferences = this.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
-
-        userId = preferences.getString("userId", new String());
+        preferences = ColorMusicApplication.getSharedPreferences();
+        userId = preferences.getString(CustomPreferences.USER_ID, new String());
 
         liked();
     }
