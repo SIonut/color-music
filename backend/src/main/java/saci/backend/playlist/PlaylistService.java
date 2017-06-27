@@ -67,4 +67,10 @@ public class PlaylistService {
                 .map(it -> new ModelMapper().map(it, PlaylistDto.class))
                 .collect(Collectors.toList());
     }
+
+    public List<PlaylistDto> findByUserIdWithoutLikes(String userId) {
+        return findByUserId(userId).stream()
+                .filter(it -> !it.getName().equals("Likes"))
+                .collect(Collectors.toList());
+    }
 }

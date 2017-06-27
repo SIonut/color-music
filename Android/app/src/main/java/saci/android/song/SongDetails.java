@@ -146,3 +146,12 @@ public class SongDetails extends AppCompatActivity {
 
     }
 }
+//
+//    String frameVideo =
+//            "<html>" +
+//                    "<body>" +
+//                    "<iframe width=\"100px\" height=\"100px\" src=\"" + song.getLink() + "?autoplay=1&vq=small\" " +
+//                    "frameborder=\"0\" allowfullscreen>" +
+//                    "</iframe>" +
+//                    "</body>" +
+//                    "</html>";
