@@ -10,6 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import saci.android.CustomPreferences;
 import saci.android.R;
 import saci.android.dtos.Oauth2Response;
 import saci.android.dtos.UserDto;
@@ -39,7 +40,7 @@ public class LoginController {
             public void onResponse(Call<UserDto> call, Response<UserDto> response) {
                 SharedPreferences preferences = mContext.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
 
-                preferences.edit().putString("userId", response.body().getId()).apply();
+                preferences.edit().putString(CustomPreferences.USER_ID, response.body().getId()).apply();
             }
 
             @Override

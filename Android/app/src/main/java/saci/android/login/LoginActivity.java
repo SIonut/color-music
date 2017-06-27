@@ -14,6 +14,7 @@ import android.widget.Toast;
 import retrofit2.Callback;
 import retrofit2.Response;
 import saci.android.ChangeActivity;
+import saci.android.CustomPreferences;
 import saci.android.R;
 import saci.android.dtos.Oauth2Response;
 import saci.android.dtos.UserDto;
@@ -86,8 +87,8 @@ public class LoginActivity extends AppCompatActivity implements ChangeActivity {
                     Intent loginIntent = new Intent(LoginActivity.this, ColorsActivity.class);
                     startActivity(loginIntent);
 
-                    preferences.edit().putString("accessToken", response.body().getAccessToken()).apply();
-                    preferences.edit().putString("refreshToken", response.body().getRefreshToken()).apply();
+                    preferences.edit().putString(CustomPreferences.ACCESS_TOKEN, response.body().getAccessToken()).apply();
+                    preferences.edit().putString(CustomPreferences.REFRESH_TOKEN, response.body().getRefreshToken()).apply();
                 }
             }
 
