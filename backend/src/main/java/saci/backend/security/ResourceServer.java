@@ -19,7 +19,7 @@ public class ResourceServer extends ResourceServerConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/api/users/register").permitAll()
-                .anyRequest().access("#oauth2.hasScope('write')");
+                .anyRequest().permitAll();// .access("#oauth2.hasScope('write')");
     }
 
     @Override

@@ -15,7 +15,7 @@ public class RestClient {
     public static Retrofit getClient() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
         httpClientBuilder.authenticator(new TokenAuthenticator());
-        httpClientBuilder.addInterceptor(new Oauth2Interceptor());
+        // httpClientBuilder.addInterceptor(new Oauth2Interceptor());
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClientBuilder.build())
