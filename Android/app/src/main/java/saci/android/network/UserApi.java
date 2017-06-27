@@ -14,7 +14,7 @@ import saci.android.dtos.UserDto;
  */
 public interface UserApi {
 
-    @POST("users/register")
+    @POST("api/users/register")
     Call<UserDto> register(@Body UserDto userDto);
 
     @POST("api/users")
