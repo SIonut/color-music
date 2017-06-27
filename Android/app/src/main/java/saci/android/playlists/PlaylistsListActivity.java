@@ -16,13 +16,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
 import saci.android.network.PlaylistApi;
 import saci.android.network.RestClient;
-import saci.android.network.SongsApi;
 import saci.android.playlists.adapter.PlaylistListAdapter;
 
 /**

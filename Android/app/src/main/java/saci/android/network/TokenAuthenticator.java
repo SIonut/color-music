@@ -16,8 +16,6 @@ public class TokenAuthenticator implements Authenticator {
     @Override
     public Request authenticate(Route route, Response response) throws IOException {
 
-        //Refresh Your Access Token Here
-
 //        return response.request().newBuilder()
 //                .header("Authorization", AccessToken)
 //                .build();
