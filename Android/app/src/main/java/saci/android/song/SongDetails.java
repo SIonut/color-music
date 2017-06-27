@@ -16,6 +16,8 @@ import android.widget.CompoundButton;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import saci.android.ColorMusicApplication;
+import saci.android.CustomPreferences;
 import saci.android.R;
 import saci.android.dtos.SongDto;
 import saci.android.network.RestClient;
@@ -47,8 +49,8 @@ public class SongDetails extends AppCompatActivity {
 
         song = (SongDto) getIntent().getSerializableExtra("song");
 
-        SharedPreferences preferences = this.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
-        userId = preferences.getString("userId", "");
+        SharedPreferences preferences = ColorMusicApplication.getSharedPreferences();
+        userId = preferences.getString(CustomPreferences.USER_ID, "");
 
         likeSongRadioButton();
         addToPlaylistButton();
@@ -111,7 +113,8 @@ public class SongDetails extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent playlistIntent = new Intent(SongDetails.this, PlaylistsListActivity.class);
-                playlistIntent.putExtra("addToLike", true);
+                playlistIntent.putExtra("addToPlaylist", true);
+                playlistIntent.putExtra("song", song);
                 startActivity(playlistIntent);
             }
         });

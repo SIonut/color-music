@@ -12,8 +12,14 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import saci.android.R;
+import saci.android.dtos.PlaylistDto;
 import saci.android.dtos.SongDto;
+import saci.android.network.PlaylistApi;
+import saci.android.network.RestClient;
 import saci.android.playlists.adapter.PlaylistsSongsAdapter;
 import saci.android.song.SongDetails;
 
@@ -23,21 +29,17 @@ import saci.android.song.SongDetails;
 public class PlaylistSongsActivity extends AppCompatActivity {
 
     private List<SongDto> playlistSongList;
+    private PlaylistDto playlistDto;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.playlists_list);
 
-        playlistSongs();
+        playlistDto = (PlaylistDto) getIntent().getSerializableExtra("playlist");
+        playlistSongList = playlistDto.getSongs();
+
         createListAdapter();
-    }
-
-    private void playlistSongs() {
-        playlistSongList = new ArrayList<>();
-
-        // TODO interrogate database
-
     }
 
     private void createListAdapter() {

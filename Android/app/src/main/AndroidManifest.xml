@@ -55,6 +55,9 @@
         <activity
             android:name=".playlists.NewPlaylist"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity><activity
+            android:name=".playlists.PlaylistSongsActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
