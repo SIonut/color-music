@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import java.io.IOException;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,8 +22,9 @@ class Oauth2Interceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         SharedPreferences sharedPreferences = ColorMusicApplication.getSharedPreferences();
         Request request = chain.request();
-        Request.Builder builder = request.newBuilder().addHeader("Authorization",
-                sharedPreferences.getString(CustomPreferences.ACCESS_TOKEN, ""));
+        HttpUrl url = request.url().newBuilder().addQueryParameter("access_token",
+                sharedPreferences.getString(CustomPreferences.ACCESS_TOKEN, "")).build();
+        Request.Builder builder = request.newBuilder().url(url);
         return chain.proceed(builder.build());
     }
 }
