@@ -61,6 +61,6 @@ public class PlaylistController {
 
     @RequestMapping(value = "/{userId}/playlists")
     public ResponseEntity<List<PlaylistDto>> getPlaylists(@PathVariable String userId) {
-        return new ResponseEntity<>(playlistService.findByUserId(userId), HttpStatus.OK);
+        return new ResponseEntity<>(playlistService.findByUserIdWithoutLikes(userId), HttpStatus.OK);
     }
 }

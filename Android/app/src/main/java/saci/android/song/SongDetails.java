@@ -135,9 +135,15 @@ public class SongDetails extends AppCompatActivity {
     private void songWebFrame() {
         song = (SongDto) getIntent().getSerializableExtra("song");
 
-        String frameVideo = "<html><body>Video From YouTube<br><iframe width=\"420px\" height=\"315px\" " +
-                "src=\" " + song.getLink() + "?autoplay=1&vq=small\" " +
-                "frameborder=\"0\" allowfullscreen></iframe></body></html>";
+
+    String frameVideo =
+            "<html>" +
+                    "<body>" +
+                    "<iframe width=\"100%\" height=\"100%\" src=\"" + song.getLink() + "?autoplay=1&vq=small\" " +
+                    "frameborder=\"0\" allowfullscreen>" +
+                    "</iframe>" +
+                    "</body>" +
+                    "</html>";
 
         mWebView = (WebView) findViewById(R.id.videoView);
         mWebView.getSettings().setJavaScriptEnabled(true);
