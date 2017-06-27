@@ -8,9 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import saci.android.ChangeActivity;
 import saci.android.R;
 import saci.android.colors.ColorsActivity;

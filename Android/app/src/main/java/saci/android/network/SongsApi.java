@@ -13,18 +13,18 @@ import saci.android.dtos.SongDto;
  */
 public interface SongsApi {
 
-    @GET("songs/{color}")
+    @GET("api/songs/{color}")
     Call<List<SongDto>> getByColor(@Path("color") String color);
 
-    @GET("songs/id/{id}")
+    @GET("api/songs/id/{id}")
     Call<SongDto> getById(@Path("id") String id);
 
-    @GET("users/{userId}/likes/{songId}")
+    @GET("api/users/{userId}/likes/{songId}")
     Call<Boolean> isLiked(@Path("userId") String userId, @Path("songId") String songId);
 
-    @POST("users/{userId}/likes/add/{songId}")
+    @POST("api/users/{userId}/likes/add/{songId}")
     Call<Boolean> addToLikes(@Path("userId") String userId, @Path("songId") String songId);
 
-    @POST("users/{userId}/likes/remove/{songId}")
+    @POST("api/users/{userId}/likes/remove/{songId}")
     Call<Boolean> deleteFromLikes(@Path("userId") String userId, @Path("songId") String songId);
 }

@@ -12,9 +12,9 @@ import saci.android.dtos.PlaylistDto;
  */
 public interface PlaylistApi {
 
-    @GET("users/{userId}/likes")
+    @GET("api/users/{userId}/likes")
     Call<PlaylistDto> getLikes(@Path("userId") String userId);
 
-    @GET("playlists/{userId}/playlists")
+    @GET("api/playlists/{userId}/playlists")
     Call<List<PlaylistDto>> getPlaylists(@Path("userId") String userId);
 }

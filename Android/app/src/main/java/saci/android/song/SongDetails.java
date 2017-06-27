@@ -23,11 +23,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
 import saci.android.dtos.SongDto;
+import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
 
 /**
@@ -41,7 +40,6 @@ public class SongDetails extends AppCompatActivity {
     private Button mAddToPlaylistButton;
     private WebView mWebView;
 
-    private Retrofit retrofit;
     private SongsApi songsApi;
     private String userId;
 
@@ -50,16 +48,12 @@ public class SongDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.song_detailed);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(getResources().getString(R.string.base_link))
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-        songsApi = retrofit.create(SongsApi.class);
+        songsApi = RestClient.getClient().create(SongsApi.class);
 
         song = (SongDto) getIntent().getSerializableExtra("song");
 
         SharedPreferences preferences = this.getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE);
-        userId = preferences.getString("userId", new String());
+        userId = preferences.getString("userId", "");
 
         likeSongRadioButton();
         addToPlaylistButton();
