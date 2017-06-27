@@ -9,6 +9,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import saci.android.R;
 import saci.android.dtos.UserDto;
+import saci.android.network.RestClient;
 import saci.android.network.UserApi;
 
 /**
@@ -25,12 +26,7 @@ public class RegisterController {
     }
 
     public void createAccount() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(mContext.getResources().getString(R.string.base_link))
-                .addConverterFactory(JacksonConverterFactory.create())
-                .build();
-
-        UserApi userApi = retrofit.create(UserApi.class);
+        UserApi userApi = RestClient.getClient().create(UserApi.class);
 
         userApi.register(userDto).enqueue(new Callback<UserDto>() {
             @Override

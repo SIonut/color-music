@@ -27,6 +27,7 @@ public class PlaylistSongsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.playlists_list);
 
         playlistSongs();
         createListAdapter();
@@ -42,7 +43,7 @@ public class PlaylistSongsActivity extends AppCompatActivity {
     private void createListAdapter() {
         ArrayAdapter adapter = new PlaylistsSongsAdapter(this, playlistSongList);
 
-        ListView listView = (ListView) findViewById(R.id.y);
+        ListView listView = (ListView) findViewById(R.id.playlists);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
