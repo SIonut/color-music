@@ -16,7 +16,7 @@ public class ColorMusicApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ColorMusicApplication.context = getApplicationContext();
-        pusherService = new PusherService(context.getApplicationContext());
+        ColorMusicApplication.pusherService = new PusherService(context.getApplicationContext());
     }
 
     public static Context getAppContext() {
