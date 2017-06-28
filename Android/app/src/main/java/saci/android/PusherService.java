@@ -14,12 +14,16 @@ import com.pusher.client.channel.SubscriptionEventListener;
  */
 public class PusherService {
 
+    private Pusher pusher;
+    private Channel channel;
+
     public PusherService(final Context appContext) {
         PusherOptions options = new PusherOptions();
         options.setCluster("eu");
-        Pusher pusher = new Pusher("3d9ffe05647a7cbf2063", options);
+        pusher = new Pusher("3d9ffe05647a7cbf2063", options);
 
-        Channel channel = pusher.subscribe(CustomPreferences.USER_ID);
+        channel = pusher.subscribe(ColorMusicApplication.getSharedPreferences().getString(CustomPreferences
+                .USER_ID, ""));
 
         channel.bind("like", new SubscriptionEventListener() {
             @Override

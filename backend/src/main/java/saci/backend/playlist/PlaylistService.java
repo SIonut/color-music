@@ -66,6 +66,7 @@ public class PlaylistService {
     public PlaylistDto update(PlaylistDto dto) {
         ModelMapper modelMapper = new ModelMapper();
         Playlist old = playlistRepository.findOne(dto.getId());
+        dto.setFollowing(dto.getFollowing().stream().distinct().collect(Collectors.toList()));
         Playlist saved = playlistRepository.save(modelMapper.map(dto, Playlist.class));
         PlaylistDto result = modelMapper.map(saved, PlaylistDto.class);
 
@@ -109,7 +110,7 @@ public class PlaylistService {
     public List<PlaylistDto> getTopPlaylists(int limit) {
         return playlistRepository.findAll().stream()
                 .filter(it -> !it.getName().equals("Likes"))
-                .sorted(Comparator.comparingInt(o -> o.getFollowing().size()))
+                .sorted((o1, o2) -> o2.getFollowing().size() - o1.getFollowing().size())
                 .limit(limit)
                 .map(it -> new ModelMapper().map(it, PlaylistDto.class))
                 .collect(Collectors.toList());
