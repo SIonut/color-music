@@ -20,7 +20,7 @@ public class UserController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<UserDto> findByCredentials(@RequestBody UserDto dto) {
-        UserDto userDto = userService.find(dto);
+        UserDto userDto = userService.findByUsername(dto);
         if (userDto == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -49,16 +49,21 @@ public class UserService {
         playlistDto.setName("Likes");
         playlistDto.setUserId(user.getId());
         playlistDto.setSongs(Collections.emptyList());
+        playlistDto.setFollowing(Collections.emptyList());
         playlistService.create(playlistDto);
         return savedDto;
     }
 
-    public UserDto find(UserDto dto) {
+    public UserDto findByUsername(UserDto dto) {
         User user = userRepository.findByUsername(dto.getUsername());
         if (user == null) {
             return null;
         }
         return new ModelMapper().map(user, UserDto.class);
+    }
+
+    public UserDto findById(String id) {
+        return new ModelMapper().map(userRepository.findOne(id), UserDto.class);
     }
 
     public Boolean isSongLiked(String userId, String songId) {

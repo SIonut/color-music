@@ -3,9 +3,12 @@ package saci.backend.playlist;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import saci.backend.pusher.PusherService;
+import saci.backend.song.Song;
+import saci.backend.user.User;
+import saci.backend.user.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -14,10 +17,16 @@ import java.util.stream.Collectors;
 @Service
 public class PlaylistService {
 
+    private final PusherService pusherService;
+    private final UserRepository userRepository;
     private final PlaylistRepository playlistRepository;
 
     @Autowired
-    public PlaylistService(PlaylistRepository playlistRepository) {
+    public PlaylistService(PusherService pusherService,
+                           UserRepository userRepository,
+                           PlaylistRepository playlistRepository) {
+        this.pusherService = pusherService;
+        this.userRepository = userRepository;
         this.playlistRepository = playlistRepository;
     }
 
@@ -33,6 +42,7 @@ public class PlaylistService {
         if (one == null) {
             return null;
         }
+        one.setFollowing(Collections.emptyList());
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(one, PlaylistDto.class);
     }
@@ -47,6 +57,7 @@ public class PlaylistService {
         if (!isUnique) {
             return null;
         }
+        dto.setFollowing(Collections.emptyList());
         Playlist entity = modelMapper.map(dto, Playlist.class);
         Playlist saved = playlistRepository.save(entity);
         return modelMapper.map(saved, PlaylistDto.class);
@@ -54,8 +65,29 @@ public class PlaylistService {
 
     public PlaylistDto update(PlaylistDto dto) {
         ModelMapper modelMapper = new ModelMapper();
+        Playlist old = playlistRepository.findOne(dto.getId());
         Playlist saved = playlistRepository.save(modelMapper.map(dto, Playlist.class));
-        return modelMapper.map(saved, PlaylistDto.class);
+        PlaylistDto result = modelMapper.map(saved, PlaylistDto.class);
+
+        saved.getFollowing().removeAll(old.getFollowing());
+        Optional<String> newFollower = saved.getFollowing().stream().findFirst();
+        if (newFollower.isPresent()) {
+            User user = userRepository.findOne(newFollower.get());
+            pusherService.emit(dto.getUserId(), PusherService.EVENT_LIKE,
+                    user.getUsername() + " liked your playlist");
+        }
+
+        saved.getSongs().removeAll(old.getSongs());
+        Optional<Song> newSongInPlaylist = saved.getSongs().stream().findFirst();
+        if (newSongInPlaylist.isPresent()) {
+            User user = userRepository.findOne(dto.getUserId());
+            saved.getFollowing().forEach(it -> {
+                pusherService.emit(it, PusherService.EVENT_FOLLOW,
+                        user.getUsername() + " added a new song into " + dto.getName());
+            });
+        }
+
+        return result;
     }
 
     public void delete(String id) {
@@ -71,6 +103,15 @@ public class PlaylistService {
     public List<PlaylistDto> findByUserIdWithoutLikes(String userId) {
         return findByUserId(userId).stream()
                 .filter(it -> !it.getName().equals("Likes"))
+                .collect(Collectors.toList());
+    }
+
+    public List<PlaylistDto> getTopPlaylists(int limit) {
+        return playlistRepository.findAll().stream()
+                .filter(it -> !it.getName().equals("Likes"))
+                .sorted(Comparator.comparingInt(o -> o.getFollowing().size()))
+                .limit(limit)
+                .map(it -> new ModelMapper().map(it, PlaylistDto.class))
                 .collect(Collectors.toList());
     }
 }

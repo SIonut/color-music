@@ -22,6 +22,9 @@ class Oauth2Interceptor implements Interceptor {
     public Response intercept(@NonNull Chain chain) throws IOException {
         SharedPreferences sharedPreferences = ColorMusicApplication.getSharedPreferences();
         Request request = chain.request();
+        if (request.url().toString().contains("api/users/register")) {
+            return chain.proceed(request.newBuilder().addHeader("Content-Type", "application/json").build());
+        }
         HttpUrl url = request.url().newBuilder().addQueryParameter("access_token",
                 sharedPreferences.getString(CustomPreferences.ACCESS_TOKEN, "")).build();
         Request.Builder builder = request.newBuilder().url(url);
