@@ -35,7 +35,6 @@ public class PusherService {
         channel.bind("like", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
-                Looper.prepare();
                 showNotification("New follower", data);
                 System.out.println(data);
             }
@@ -44,7 +43,6 @@ public class PusherService {
         channel.bind("follow", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
-                Looper.prepare();
                 showNotification("New song in playlist", data);
                 System.out.println(data);
             }
