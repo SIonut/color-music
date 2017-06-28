@@ -49,6 +49,7 @@ public class UserService {
         playlistDto.setName("Likes");
         playlistDto.setUserId(user.getId());
         playlistDto.setSongs(Collections.emptyList());
+        playlistDto.setFollowing(Collections.emptyList());
         playlistService.create(playlistDto);
         return savedDto;
     }

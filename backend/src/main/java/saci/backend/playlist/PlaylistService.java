@@ -107,6 +107,7 @@ public class PlaylistService {
 
     public List<PlaylistDto> getTopPlaylists(int limit) {
         return playlistRepository.findAll().stream()
+                .filter(it -> !it.getName().equals("Likes"))
                 .sorted(Comparator.comparingInt(o -> o.getFollowing().size()))
                 .limit(limit)
                 .map(it -> new ModelMapper().map(it, PlaylistDto.class))
