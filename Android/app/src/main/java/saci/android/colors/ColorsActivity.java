@@ -23,6 +23,7 @@ import saci.android.music.ColorMusicResultActivity;
 import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
 import saci.android.playlists.PlaylistsListActivity;
+import saci.android.playlists.TopPlaylistsActivity;
 
 /**
  * Created by Corina on 5/25/2017.
@@ -31,6 +32,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
 
     private TextView drawerPlaylists;
     private TextView drawerLiked;
+    private TextView drawerTopPlaylists;
 
     private TextView selectedMoodsView;
     private Button findButton;
@@ -50,7 +52,7 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         selectedButtons = new ArrayList<>();
 
         drawerPlaylists = (TextView) findViewById(R.id.playlist_navigator);
-//        drawerFollowing = (TextView) findViewById(R.id.following_navigator);
+        drawerTopPlaylists = (TextView) findViewById(R.id.top_playlists_navigator);
         drawerLiked = (TextView) findViewById(R.id.liked_navigator);
 
         selectedMoodsView = (TextView) findViewById(R.id.selected_moods);
@@ -143,6 +145,14 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
     }
 
     private void drawer() {
+        drawerTopPlaylists.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent topPlaylistIntent = new Intent(ColorsActivity.this, TopPlaylistsActivity.class);
+                startActivity(topPlaylistIntent);
+            }
+        });
+
         drawerPlaylists.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

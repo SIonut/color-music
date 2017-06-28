@@ -12,6 +12,7 @@ public class PlaylistDto implements Serializable {
     private String userId;
     private String name;
     private List<SongDto> songs;
+    private List<String> following;
 
     public String getId() {
         return id;
@@ -43,5 +44,13 @@ public class PlaylistDto implements Serializable {
 
     public void setSongs(List<SongDto> songs) {
         this.songs = songs;
+    }
+
+    public List<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<String> following) {
+        this.following = following;
     }
 }

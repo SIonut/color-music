@@ -29,4 +29,7 @@ public interface PlaylistApi {
 
     @GET("api/playlists/{playlistId}")
     Call<PlaylistDto> getPlaylist(@Path("playlistId") String playlistId);
+
+    @GET("api/playlists/top")
+    Call<List<PlaylistDto>> getTopPlaylists();
 }
