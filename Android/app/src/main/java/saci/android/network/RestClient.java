@@ -10,12 +10,12 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 
 public class RestClient {
 
-    public static final String BASE_URL = "http://172.24.30.49:8080/";
+    public static final String BASE_URL = "http://188.24.72.122:8080/";
 
     public static Retrofit getClient() {
         OkHttpClient.Builder httpClientBuilder = new OkHttpClient.Builder();
-        httpClientBuilder.authenticator(new TokenAuthenticator());
-         httpClientBuilder.addInterceptor(new Oauth2Interceptor());
+        // httpClientBuilder.authenticator(new TokenAuthenticator());
+        httpClientBuilder.addInterceptor(new Oauth2Interceptor());
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(httpClientBuilder.build())

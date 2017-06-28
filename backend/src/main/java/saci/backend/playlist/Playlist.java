@@ -18,6 +18,11 @@ public class Playlist {
     private String name;
     private List<Song> songs;
 
+    /**
+     * The ids of the users that are following this playlist.
+     */
+    private List<String> following;
+
     public String getId() {
         return id;
     }
@@ -48,5 +53,13 @@ public class Playlist {
 
     public void setSongs(List<Song> songs) {
         this.songs = songs;
+    }
+
+    public List<String> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(List<String> following) {
+        this.following = following;
     }
 }

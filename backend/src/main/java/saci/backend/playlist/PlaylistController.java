@@ -63,4 +63,9 @@ public class PlaylistController {
     public ResponseEntity<List<PlaylistDto>> getPlaylists(@PathVariable String userId) {
         return new ResponseEntity<>(playlistService.findByUserIdWithoutLikes(userId), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/top")
+    public ResponseEntity<List<PlaylistDto>> getTop() {
+        return new ResponseEntity<>(playlistService.getTopPlaylists(100), HttpStatus.OK);
+    }
 }
