@@ -11,10 +11,12 @@ import android.content.SharedPreferences;
 public class ColorMusicApplication extends Application {
 
     private static Context context;
+    private static PusherService pusherService;
 
     public void onCreate() {
         super.onCreate();
         ColorMusicApplication.context = getApplicationContext();
+        pusherService = new PusherService(context.getApplicationContext());
     }
 
     public static Context getAppContext() {

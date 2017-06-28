@@ -335,6 +335,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:id="@+id/top_playlists_navigator"
+            android:layout_below="@+id/playlist_navigator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FE9FAA"
+            android:fontFamily="casual"
+            android:textAlignment="center"
+            android:textSize="25dp"
+            android:paddingLeft="40px"
+            android:text="Top playlists"/>
+
     </RelativeLayout>
 
     </android.support.design.widget.NavigationView>
