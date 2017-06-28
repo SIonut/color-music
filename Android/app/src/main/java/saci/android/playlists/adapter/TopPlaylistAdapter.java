@@ -55,12 +55,12 @@ public class TopPlaylistAdapter extends ArrayAdapter<PlaylistDto> {
             playlistName.setText(item.getName());
             playlistLikesNo.setText(item.getFollowing().size() + "");
 
-            final String userId = getContext().getApplicationContext().getSharedPreferences("saci.android", Context
-                    .MODE_PRIVATE)
+            final String userId = getContext().getApplicationContext()
+                    .getSharedPreferences("saci.android", Context.MODE_PRIVATE)
                     .getString(CustomPreferences.USER_ID, "");
 
             for (int i=0; i < item.getFollowing().size(); i++) {
-                if (item.getUserId().equals(userId)) {
+                if (item.getFollowing().contains(userId)) {
                     likedCheckBox.setChecked(true);
                 }
             }
@@ -77,12 +77,10 @@ public class TopPlaylistAdapter extends ArrayAdapter<PlaylistDto> {
                     playlistApi.updatePlaylist(item).enqueue(new Callback<PlaylistDto>() {
                         @Override
                         public void onResponse(Call<PlaylistDto> call, Response<PlaylistDto> response) {
-
                         }
 
                         @Override
                         public void onFailure(Call<PlaylistDto> call, Throwable t) {
-
                         }
                     });
                 }
