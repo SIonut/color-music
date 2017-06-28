@@ -57,6 +57,7 @@ public class PlaylistService {
         if (!isUnique) {
             return null;
         }
+        dto.setFollowing(Collections.emptyList());
         Playlist entity = modelMapper.map(dto, Playlist.class);
         Playlist saved = playlistRepository.save(entity);
         return modelMapper.map(saved, PlaylistDto.class);
