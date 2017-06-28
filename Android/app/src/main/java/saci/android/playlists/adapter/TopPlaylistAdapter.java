@@ -55,9 +55,12 @@ public class TopPlaylistAdapter extends ArrayAdapter<PlaylistDto> {
             playlistName.setText(item.getName());
             playlistLikesNo.setText(item.getFollowing().size() + "");
 
+            final String userId = getContext().getApplicationContext().getSharedPreferences("saci.android", Context
+                    .MODE_PRIVATE)
+                    .getString(CustomPreferences.USER_ID, "");
+
             for (int i=0; i < item.getFollowing().size(); i++) {
-                if (getContext().getApplicationContext().getSharedPreferences("saci.android", Context.MODE_PRIVATE)
-                        .getString(CustomPreferences.USER_ID, "").equals(item.getUserId())) {
+                if (item.getUserId().equals(userId)) {
                     likedCheckBox.setChecked(true);
                 }
             }
@@ -66,9 +69,9 @@ public class TopPlaylistAdapter extends ArrayAdapter<PlaylistDto> {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (likedCheckBox.isChecked()) {
-                        item.getFollowing().add(item.getUserId());
+                        item.getFollowing().add(userId);
                     } else {
-                        item.getFollowing().remove(item.getUserId());
+                        item.getFollowing().remove(userId);
                     }
 
                     playlistApi.updatePlaylist(item).enqueue(new Callback<PlaylistDto>() {
