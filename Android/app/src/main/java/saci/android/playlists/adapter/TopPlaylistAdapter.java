@@ -50,39 +50,39 @@ public class TopPlaylistAdapter extends ArrayAdapter<PlaylistDto> {
         TextView playlistLikesNo = (TextView) convertView.findViewById(R.id.playlist_likes);
         final CheckBox likedCheckBox = (CheckBox) convertView.findViewById(R.id.liked);
 
-        playlistName.setText(item.getName());
-        playlistLikesNo.setText(item.getFollowing().size());
-        likedCheckBox.setChecked(false);
+        if (item.getFollowing() != null) {
+            playlistName.setText(item.getName());
+            playlistLikesNo.setText(item.getFollowing().size() + "");
 
-        for (int i=0; i < item.getFollowing().size(); i++) {
-            if (CustomPreferences.USER_ID.equals(item.getFollowing().get(i))) {
-                likedCheckBox.setChecked(true);
-                return convertView;
-            }
-        }
-
-        likedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (!likedCheckBox.isChecked()) {
-                    item.getFollowing().add(item.getId());
-                } else {
-                    item.getFollowing().remove(item.getId());
+            for (int i=0; i < item.getFollowing().size(); i++) {
+                if (CustomPreferences.USER_ID.equals(item.getFollowing().get(i))) {
+                    likedCheckBox.setChecked(true);
                 }
-
-                playlistApi.updatePlaylist(item).enqueue(new Callback<PlaylistDto>() {
-                    @Override
-                    public void onResponse(Call<PlaylistDto> call, Response<PlaylistDto> response) {
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<PlaylistDto> call, Throwable t) {
-
-                    }
-                });
             }
-        });
+
+            likedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (likedCheckBox.isChecked()) {
+                        item.getFollowing().add(item.getUserId());
+                    } else {
+                        item.getFollowing().remove(item.getUserId());
+                    }
+
+                    playlistApi.updatePlaylist(item).enqueue(new Callback<PlaylistDto>() {
+                        @Override
+                        public void onResponse(Call<PlaylistDto> call, Response<PlaylistDto> response) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<PlaylistDto> call, Throwable t) {
+
+                        }
+                    });
+                }
+            });
+        }
 
         return convertView;
     }

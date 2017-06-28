@@ -22,7 +22,6 @@ import saci.android.CustomPreferences;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
 import saci.android.dtos.SongDto;
-import saci.android.liked.LikedListActivity;
 import saci.android.network.PlaylistApi;
 import saci.android.network.RestClient;
 import saci.android.network.SongsApi;
@@ -47,11 +46,12 @@ public class TopPlaylistsActivity extends AppCompatActivity {
 
         userId = preferences.getString(CustomPreferences.USER_ID, new String());
 
-        topPlaylistsList = new ArrayList<>();
         playlists();
     }
 
     private void playlists() {
+        topPlaylistsList = new ArrayList<>();
+
         final PlaylistApi playlistApi = RestClient.getClient().create(PlaylistApi.class);
         playlistApi.getTopPlaylists().enqueue(new Callback<List<PlaylistDto>>() {
             @Override
@@ -70,38 +70,20 @@ public class TopPlaylistsActivity extends AppCompatActivity {
     }
 
     private void createListAdapter() {
-        ArrayAdapter adapter = new TopPlaylistAdapter(this, topPlaylistsList);
+        if (topPlaylistsList != null) {
+            ArrayAdapter adapter = new TopPlaylistAdapter(this, topPlaylistsList);
 
-        ListView listView = (ListView) findViewById(R.id.playlists);
-        listView.setAdapter(adapter);
+            ListView listView = (ListView) findViewById(R.id.playlists);
+            listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                adapterView.getSelectedItemId();
-
-                SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
-                songsApi.getById(topPlaylistsList.get(i).getId()).enqueue(new Callback<SongDto>() {
-                    @Override
-                    public void onResponse(Call<SongDto> call, Response<SongDto> response) {
-                        if (response.code() == 200) {
-                            Intent detailsIntent = new Intent(TopPlaylistsActivity.this, SongDetails.class);
-                            detailsIntent.putExtra("song", response.body());
-                            startActivity(detailsIntent);
-                        } else {
-                            Toast.makeText(TopPlaylistsActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<SongDto> call, Throwable t) {
-                        Toast.makeText(TopPlaylistsActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-            }
-        });
-
-
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent playlistSongsIntent = new Intent(TopPlaylistsActivity.this, PlaylistSongsActivity.class);
+                    playlistSongsIntent.putExtra("playlist", topPlaylistsList.get(position));
+                    startActivity(playlistSongsIntent);
+                }
+            });
+        }
     }
 }

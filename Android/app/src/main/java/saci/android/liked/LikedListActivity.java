@@ -68,35 +68,37 @@ public class LikedListActivity extends AppCompatActivity {
     }
 
     private void createListAdapter() {
-        ArrayAdapter adapter = new LikedListAdapter(this, likedList);
+        if (likedList != null) {
+            ArrayAdapter adapter = new LikedListAdapter(this, likedList);
 
-        ListView listView = (ListView) findViewById(R.id.y);
-        listView.setAdapter(adapter);
+            ListView listView = (ListView) findViewById(R.id.y);
+            listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
-                songsApi.getById(likedList.get(position).getId()).enqueue(new Callback<SongDto>() {
-                    @Override
-                    public void onResponse(Call<SongDto> call, Response<SongDto> response) {
-                        if (response.code() == 200) {
-                            Intent detailsIntent = new Intent(LikedListActivity.this, SongDetails.class);
-                            detailsIntent.putExtra("song", response.body());
-                            startActivity(detailsIntent);
-                        } else {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
+                    songsApi.getById(likedList.get(position).getId()).enqueue(new Callback<SongDto>() {
+                        @Override
+                        public void onResponse(Call<SongDto> call, Response<SongDto> response) {
+                            if (response.code() == 200) {
+                                Intent detailsIntent = new Intent(LikedListActivity.this, SongDetails.class);
+                                detailsIntent.putExtra("song", response.body());
+                                startActivity(detailsIntent);
+                            } else {
+                                Toast.makeText(LikedListActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SongDto> call, Throwable t) {
                             Toast.makeText(LikedListActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call<SongDto> call, Throwable t) {
-                        Toast.makeText(LikedListActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
-                    }
-                });
-
-            }
-        });
+                }
+            });
+        }
 
     }
 }

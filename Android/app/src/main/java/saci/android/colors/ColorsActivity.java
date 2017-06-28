@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SnapHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,29 +118,32 @@ public class ColorsActivity extends AppCompatActivity implements ChangeActivity 
         findButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (selectedMoods != null) {
+                    String colors = "";
 
-                String colors = "";
+                    for (int i=0; i < selectedMoods.size()-1; i++) {
+                        colors += selectedMoods.get(i) + ",";
+                    }
+                    colors += selectedMoods.get(selectedMoods.size()-1);
 
-                for (int i=0; i < selectedMoods.size()-1; i++) {
-                    colors += selectedMoods.get(i) + ",";
+                    SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
+                    songsApi.getByColor(colors).enqueue(new Callback<List<SongDto>>() {
+                        @Override
+                        public void onResponse(Call<List<SongDto>> call, Response<List<SongDto>> response) {
+                            Intent findIntent = new Intent(context, ColorMusicResultActivity.class);
+                            ArrayList<SongDto> resp = (ArrayList<SongDto>) response.body();
+                            findIntent.putExtra("songs", resp);
+                            startActivity(findIntent);
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<SongDto>> call, Throwable t) {
+
+                        }
+                    });
+                } else {
+                    Toast.makeText(ColorsActivity.this, "No mood selected!", Toast.LENGTH_SHORT).show();
                 }
-                colors += selectedMoods.get(selectedMoods.size()-1);
-
-                SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
-                songsApi.getByColor(colors).enqueue(new Callback<List<SongDto>>() {
-                    @Override
-                    public void onResponse(Call<List<SongDto>> call, Response<List<SongDto>> response) {
-                        Intent findIntent = new Intent(context, ColorMusicResultActivity.class);
-                        ArrayList<SongDto> resp = (ArrayList<SongDto>) response.body();
-                        findIntent.putExtra("songs", resp);
-                        startActivity(findIntent);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<SongDto>> call, Throwable t) {
-
-                    }
-                });
 
             }
         });
