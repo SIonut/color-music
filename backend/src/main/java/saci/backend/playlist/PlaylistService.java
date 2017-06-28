@@ -82,7 +82,7 @@ public class PlaylistService {
         Optional<Song> newSongInPlaylist = saved.getSongs().stream().findFirst();
         if (newSongInPlaylist.isPresent()) {
             User user = userRepository.findOne(dto.getUserId());
-            saved.getFollowing().forEach(it -> {
+            result.getFollowing().forEach(it -> {
                 pusherService.emit(it, PusherService.EVENT_FOLLOW,
                         user.getUsername() + " added a new song into " + dto.getName());
             });
