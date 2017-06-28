@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,17 +20,13 @@ import saci.android.ColorMusicApplication;
 import saci.android.CustomPreferences;
 import saci.android.R;
 import saci.android.dtos.PlaylistDto;
-import saci.android.dtos.SongDto;
 import saci.android.network.PlaylistApi;
 import saci.android.network.RestClient;
-import saci.android.network.SongsApi;
 import saci.android.playlists.adapter.TopPlaylistAdapter;
-import saci.android.song.SongDetails;
 
 /**
  * Created by corina on 28.06.2017.
  */
-
 public class TopPlaylistsActivity extends AppCompatActivity {
 
     private String userId;
