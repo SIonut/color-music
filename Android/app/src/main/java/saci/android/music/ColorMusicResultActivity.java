@@ -43,6 +43,7 @@ public class ColorMusicResultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.results_list);
 
+        songsList = new ArrayList<>();
         songsList = (ArrayList<SongDto>) getIntent().getSerializableExtra("songs");
         createListAdapter();
 
@@ -57,35 +58,38 @@ public class ColorMusicResultActivity extends AppCompatActivity {
     }
 
     private void createListAdapter() {
-        ArrayAdapter adapter = new SearchResultListAdapter(this, songsList);
+        if (songsList != null) {
+            ArrayAdapter adapter = new SearchResultListAdapter(this, songsList);
 
-        ListView listView = (ListView) findViewById(R.id.y);
-        listView.setAdapter(adapter);
+            ListView listView = (ListView) findViewById(R.id.y);
+            listView.setAdapter(adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
-                songsApi.getById(songsList.get(position).getId()).enqueue(new Callback<SongDto>() {
-                    @Override
-                    public void onResponse(Call<SongDto> call, Response<SongDto> response) {
-                        if (response.code() == 200) {
-                            Intent detailsIntent = new Intent(ColorMusicResultActivity.this, SongDetails.class);
-                            detailsIntent.putExtra("song", response.body());
-                            startActivity(detailsIntent);
-                        } else {
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    SongsApi songsApi = RestClient.getClient().create(SongsApi.class);
+                    songsApi.getById(songsList.get(position).getId()).enqueue(new Callback<SongDto>() {
+                        @Override
+                        public void onResponse(Call<SongDto> call, Response<SongDto> response) {
+                            if (response.code() == 200) {
+                                Intent detailsIntent = new Intent(ColorMusicResultActivity.this, SongDetails.class);
+                                detailsIntent.putExtra("song", response.body());
+                                startActivity(detailsIntent);
+                            } else {
+                                Toast.makeText(ColorMusicResultActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SongDto> call, Throwable t) {
                             Toast.makeText(ColorMusicResultActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call<SongDto> call, Throwable t) {
-                        Toast.makeText(ColorMusicResultActivity.this, "Cannot find song!", Toast.LENGTH_LONG).show();
-                    }
-                });
+                }
+            });
 
-            }
-        });
+        }
 
     }
 
